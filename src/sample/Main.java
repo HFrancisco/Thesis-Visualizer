@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private static final String MEDIA_URL = "file:/C:/Users/Harry/Documents/_ACADS/THESIS/Videos/CompiledAds.mp4";
+    private static final String MEDIA_URL = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/CompiledAds.mp4";
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -23,8 +23,11 @@ public class Main extends Application {
         MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setAutoPlay(true);
 
-        Controller controller = new Controller(mediaPlayer);
-        scene.setRoot(controller);
+        UI_Controller uiController = new UI_Controller(mediaPlayer);
+        scene.setRoot(uiController);
+
+        /*UI_Controller uiCont = new UI_Controller(mediaPlayer);
+        scene.setRoot(uiCont);*/
 
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();

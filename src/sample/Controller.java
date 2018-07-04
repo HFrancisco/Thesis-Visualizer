@@ -46,7 +46,7 @@ public class Controller extends BorderPane {
     private int flag11 = 0;
 
     public Controller(final MediaPlayer mp) {
-        this.mp = mp;
+        /*this.mp = mp;
         setStyle("-fx-background-color: #9b9a9a;");
         mediaView = new MediaView(mp);
         Pane mvPane = new Pane() {                };
@@ -208,10 +208,16 @@ public class Controller extends BorderPane {
         mediaBar.getChildren().add(volumeSlider);
 
         setTop(mainBar);
-        setBottom(mediaBar);
+        setBottom(mediaBar);*/
     }
 
-    protected void updateValues(BarChart  pBarChart, XYChart.Series pSeries) {
+
+
+
+
+
+
+    protected void Update_Values(BarChart  pBarChart, XYChart.Series pSeries) {
         if (playTime != null && timeSlider != null && volumeSlider != null) {
             Platform.runLater(new Runnable() {
                 public void run() {
@@ -271,6 +277,8 @@ public class Controller extends BorderPane {
 
                         //pSeries.getData().clear();
 
+                        //Doritos
+
                         pSeries.setName("Video 2");
 
                         pSeries.getData().add(new XYChart.Data("Interest", 16));
@@ -279,10 +287,14 @@ public class Controller extends BorderPane {
                         pSeries.getData().add(new XYChart.Data("Sadness"  , 1));
                         pSeries.getData().add(new XYChart.Data("Surprise"  , 13));
 
+                        flag1 = 0;
+
                     } else if(flag3 == 1 && currentTime.greaterThanOrEqualTo(new Duration(140000)) && currentTime.lessThanOrEqualTo(new Duration(259000))){  // For 3rd vid
                         flag3 = 2;
 
                         //pSeries.getData().clear();
+
+                        //PnG
 
                         pSeries.setName("Video 3");
 
@@ -291,6 +303,8 @@ public class Controller extends BorderPane {
                         pSeries.getData().add(new XYChart.Data("Happiness"  , 15));
                         pSeries.getData().add(new XYChart.Data("Sadness"  , 11));
                         pSeries.getData().add(new XYChart.Data("Surprise"  , 5));
+
+                        flag2 = 0;
 
                     } else if(flag4 == 1 && currentTime.greaterThanOrEqualTo(new Duration(260000)) && currentTime.lessThanOrEqualTo(new Duration(349000))){  // For 4th vid
                         flag4 = 2;
@@ -309,6 +323,8 @@ public class Controller extends BorderPane {
                         flag5 = 2;
 
                         //pSeries.getData().clear();
+
+                        //Hornbach
 
                         pSeries.setName("Video 5");
 
