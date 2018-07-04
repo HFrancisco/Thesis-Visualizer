@@ -21,27 +21,32 @@ import javafx.util.Duration;
 
 public class UI_Controller extends BorderPane {
 
-    private Controller controller;
+    private Controller controller = new Controller();
     private MediaPlayer mp;
     private MediaView mediaView;
-    private XYChart.Series series;
     private final boolean repeat = false;
     private boolean stopRequested = false;
     private boolean atEndOfMedia = false;
     private Duration duration;
-    private Slider timeSlider;
-    private Label playTime;
     private Slider volumeSlider;
     private HBox mediaBar;
     private HBox mainBar;
+
+    private BarChart barChart;
+    private XYChart.Series series;
+    private Slider timeSlider;
+    private Label playTime;
+    private Label spacer;
+    private Label volumeLabel;
+    private Label timeLabel;
+    final Button playButton  = new Button(">");
 
     public UI_Controller(final MediaPlayer mp) {
 
         this.mp = mp;
         setStyle("-fx-background-color: #9b9a9a;");
         mediaView = new MediaView(mp);
-        Pane mvPane = new Pane() {
-        };
+        Pane mvPane = new Pane() {};
         mvPane.getChildren().add(mediaView);
         mvPane.setStyle("-fx-background-color: #9b9a9a;");
         //setCenter(mvPane);
@@ -63,19 +68,19 @@ public class UI_Controller extends BorderPane {
         // Creating and Adding UI Elements
 
         // Bar Chart of data
-        BarChart barChart = Add_Chart();
+        Add_Chart();
         mainBar.getChildren().add(barChart);
 
         // Play Button
-        Button playButton = Add_PlayButton(barChart, series);
+        Add_PlayButton(barChart, series);
         mediaBar.getChildren().add(playButton);
 
         // Spacer
-        Label spacer = new Label("   ");
+        spacer = new Label("   ");
         mediaBar.getChildren().add(spacer);
 
         // Time Label
-        Label timeLabel = Add_TimeLabel();
+        Add_TimeLabel();
         mediaBar.getChildren().add(timeLabel);
 
         // Time Slider
@@ -87,7 +92,7 @@ public class UI_Controller extends BorderPane {
         mediaBar.getChildren().add(playTime);
 
         // Volume Label
-        Label volumeLabel = Add_VolumeLabel();
+        Add_VolumeLabel();
         mediaBar.getChildren().add(volumeLabel);
 
         // Volume Slider
@@ -98,7 +103,7 @@ public class UI_Controller extends BorderPane {
         setBottom(mediaBar);
     }
 
-    private BarChart Add_Chart(){
+    private void Add_Chart(){
 
         // Add a Chart
         CategoryAxis xAxis = new CategoryAxis();
@@ -107,7 +112,7 @@ public class UI_Controller extends BorderPane {
         NumberAxis yAxis = new NumberAxis();
         yAxis.setLabel("Frequency");
 
-        BarChart barChart = new BarChart(xAxis, yAxis);
+        barChart = new BarChart(xAxis, yAxis);
 
         series = new XYChart.Series();
         series.setName("Video 1");
@@ -120,14 +125,9 @@ public class UI_Controller extends BorderPane {
         series.getData().add(new XYChart.Data("Surprise"  , 9));
 
         barChart.getData().add(series);
-
-        return barChart;
     }
 
-    private Button Add_PlayButton(BarChart  pBarChart, XYChart.Series pSeries){
-
-        // Create Play Button
-        final Button playButton  = new Button(">");
+    private void Add_PlayButton(BarChart  pBarChart, XYChart.Series pSeries){
 
         // Add listeners to Play Button
         playButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -159,7 +159,8 @@ public class UI_Controller extends BorderPane {
         mp.currentTimeProperty().addListener(new InvalidationListener()
         {
             public void invalidated(Observable ov) {
-                controller.Update_Values(pBarChart, pSeries);
+                controller.Update_Values(duration, pSeries, playTime,
+                        timeSlider, volumeSlider, mp);
             }
         });
 
@@ -184,7 +185,8 @@ public class UI_Controller extends BorderPane {
         mp.setOnReady(new Runnable() {
             public void run() {
                 duration = mp.getMedia().getDuration();
-                controller.Update_Values(pBarChart, pSeries);
+                controller.Update_Values(duration, pSeries, playTime,
+                        timeSlider, volumeSlider, mp);
             }
         });
 
@@ -198,16 +200,12 @@ public class UI_Controller extends BorderPane {
                 }
             }
         });
-
-        return playButton;
     }
 
-    private Label Add_TimeLabel(){
+    private void Add_TimeLabel(){
 
         // Add Time Label
-        Label timeLabel = new Label("Time: ");
-
-        return  timeLabel;
+        timeLabel = new Label("Time: ");
     }
 
     private void Add_TimeSlider(){
@@ -235,12 +233,10 @@ public class UI_Controller extends BorderPane {
         playTime.setMinWidth(50);
     }
 
-    private Label Add_VolumeLabel(){
+    private void Add_VolumeLabel(){
 
         // Add the volume label
-        Label volumeLabel = new Label("Vol: ");
-
-        return volumeLabel;
+        volumeLabel = new Label("Vol: ");
     }
 
     private void Add_VolumeSlider(){

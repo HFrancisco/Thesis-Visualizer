@@ -26,9 +26,6 @@ public class Main extends Application {
         UI_Controller uiController = new UI_Controller(mediaPlayer);
         scene.setRoot(uiController);
 
-        /*UI_Controller uiCont = new UI_Controller(mediaPlayer);
-        scene.setRoot(uiCont);*/
-
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.show();

@@ -19,9 +19,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
-public class Controller extends BorderPane {
+public class Controller{
 
-    private MediaPlayer mp;
+    /*private MediaPlayer mp;
     private MediaView mediaView;
     private final boolean repeat = false;
     private boolean stopRequested = false;
@@ -31,7 +31,7 @@ public class Controller extends BorderPane {
     private Label playTime;
     private Slider volumeSlider;
     private HBox mediaBar;
-    private HBox mainBar;
+    private HBox mainBar;*/
 
     private int flag1 = 0;
     private int flag2 = 0;
@@ -45,193 +45,27 @@ public class Controller extends BorderPane {
     private int flag10 = 0;
     private int flag11 = 0;
 
-    public Controller(final MediaPlayer mp) {
-        /*this.mp = mp;
-        setStyle("-fx-background-color: #9b9a9a;");
-        mediaView = new MediaView(mp);
-        Pane mvPane = new Pane() {                };
-        mvPane.getChildren().add(mediaView);
-        mvPane.setStyle("-fx-background-color: #9b9a9a;");
-        //setCenter(mvPane);
+    public Controller(){
 
-        mediaBar = new HBox();
-        mediaBar.setAlignment(Pos.BOTTOM_LEFT);
-        mediaBar.setPadding(new Insets(0, 0, 5, 10));
-        mediaBar.setMaxWidth(1280);
-        BorderPane.setAlignment(mediaBar, Pos.BOTTOM_LEFT);
-
-        mainBar = new HBox();
-        mainBar.setAlignment(Pos.TOP_LEFT);
-        //mainBar.setPadding(new Insets(5, 10, 5, 10));
-        mainBar.setMaxWidth(1780);
-        BorderPane.setAlignment(mainBar, Pos.TOP_LEFT);
-
-        // Add a Chart
-        CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Emotions");
-
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Frequency");
-
-        BarChart barChart = new BarChart(xAxis, yAxis);
-
-        XYChart.Series series = new XYChart.Series();
-        series.setName("Video 1");
-
-        series.getData().add(new XYChart.Data("Interest", 16));
-        series.getData().add(new XYChart.Data("Indifferent"  , 4));
-        series.getData().add(new XYChart.Data("Happiness"  , 12));
-        series.getData().add(new XYChart.Data("Sadness"  , 1));
-        series.getData().add(new XYChart.Data("Surprise"  , 9));
-
-        barChart.getData().add(series);
-
-        mainBar.getChildren().add(mvPane);
-        mainBar.getChildren().add(barChart);
-
-        final Button playButton  = new Button(">");
-        mediaBar.getChildren().add(playButton);
-        playButton.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
-                MediaPlayer.Status status = mp.getStatus();
-
-                if (status == MediaPlayer.Status.UNKNOWN  || status == MediaPlayer.Status.HALTED)
-                {
-                    // don't do anything in these states
-                    return;
-                }
-
-                if ( status == MediaPlayer.Status.PAUSED
-                        || status == MediaPlayer.Status.READY
-                        || status == MediaPlayer.Status.STOPPED)
-                {
-                    // rewind the movie if we're sitting at the end
-                    if (atEndOfMedia) {
-                        mp.seek(mp.getStartTime());
-                        atEndOfMedia = false;
-                    }
-                    mp.play();
-                } else {
-                    mp.pause();
-                }
-            }
-        });
-
-        mp.currentTimeProperty().addListener(new InvalidationListener()
-        {
-            public void invalidated(Observable ov) {
-                updateValues(barChart, series);
-            }
-        });
-
-        mp.setOnPlaying(new Runnable() {
-            public void run() {
-                if (stopRequested) {
-                    mp.pause();
-                    stopRequested = false;
-                } else {
-                    playButton.setText("||");
-                }
-            }
-        });
-
-        mp.setOnPaused(new Runnable() {
-            public void run() {
-                System.out.println("onPaused");
-                playButton.setText(">");
-            }
-        });
-
-        mp.setOnReady(new Runnable() {
-            public void run() {
-                duration = mp.getMedia().getDuration();
-                updateValues(barChart, series);
-            }
-        });
-
-        mp.setCycleCount(repeat ? MediaPlayer.INDEFINITE : 1);
-        mp.setOnEndOfMedia(new Runnable() {
-            public void run() {
-                if (!repeat) {
-                    playButton.setText(">");
-                    stopRequested = true;
-                    atEndOfMedia = true;
-                }
-            }
-        });
-
-        // Add spacer
-        Label spacer = new Label("   ");
-        mediaBar.getChildren().add(spacer);
-
-        // Add Time label
-        Label timeLabel = new Label("Time: ");
-        mediaBar.getChildren().add(timeLabel);
-
-        // Add time slider
-        timeSlider = new Slider();
-        HBox.setHgrow(timeSlider, Priority.ALWAYS);
-        timeSlider.setMinWidth(50);
-        timeSlider.setMaxWidth(Double.MAX_VALUE);
-        timeSlider.valueProperty().addListener(new InvalidationListener() {
-            public void invalidated(Observable ov) {
-                if (timeSlider.isValueChanging()) {
-                    // multiply duration by percentage calculated by slider position
-                    mp.seek(duration.multiply(timeSlider.getValue() / 100.0));
-                }
-            }
-        });
-        mediaBar.getChildren().add(timeSlider);
-
-        // Add Play label
-        playTime = new Label();
-        playTime.setPrefWidth(130);
-        playTime.setMinWidth(50);
-        mediaBar.getChildren().add(playTime);
-
-        // Add the volume label
-        Label volumeLabel = new Label("Vol: ");
-        mediaBar.getChildren().add(volumeLabel);
-
-        // Add Volume slider
-        volumeSlider = new Slider();
-        volumeSlider.setPrefWidth(70);
-        volumeSlider.setMaxWidth(Region.USE_PREF_SIZE);
-        volumeSlider.setMinWidth(30);
-        volumeSlider.valueProperty().addListener(new InvalidationListener() {
-            public void invalidated(Observable ov) {
-                if (volumeSlider.isValueChanging()) {
-                    mp.setVolume(volumeSlider.getValue() / 100.0);
-                }
-            }
-        });
-        mediaBar.getChildren().add(volumeSlider);
-
-        setTop(mainBar);
-        setBottom(mediaBar);*/
     }
 
+    protected void Update_Values(Duration pDuration, XYChart.Series pSeries, Label pPlayTime,
+                                 Slider pTimeSlider, Slider pVolumeSlider, MediaPlayer pMP) {
 
-
-
-
-
-
-    protected void Update_Values(BarChart  pBarChart, XYChart.Series pSeries) {
-        if (playTime != null && timeSlider != null && volumeSlider != null) {
+        if (pPlayTime != null && pTimeSlider != null && pVolumeSlider != null) {
             Platform.runLater(new Runnable() {
                 public void run() {
-                    Duration currentTime = mp.getCurrentTime();
-                    playTime.setText(formatTime(currentTime, duration));
-                    timeSlider.setDisable(duration.isUnknown());
-                    if (!timeSlider.isDisabled()
-                            && duration.greaterThan(Duration.ZERO)
-                            && !timeSlider.isValueChanging()) {
-                        timeSlider.setValue(currentTime.divide(duration).toMillis()
+                    Duration currentTime = pMP.getCurrentTime();
+                    pPlayTime.setText(formatTime(currentTime, pDuration));
+                    pTimeSlider.setDisable(pDuration.isUnknown());
+                    if (!pTimeSlider.isDisabled()
+                            && pDuration.greaterThan(Duration.ZERO)
+                            && !pTimeSlider.isValueChanging()) {
+                        pTimeSlider.setValue(currentTime.divide(pDuration).toMillis()
                                 * 100.0);
                     }
-                    if (!volumeSlider.isValueChanging()) {
-                        volumeSlider.setValue((int)Math.round(mp.getVolume()
+                    if (!pVolumeSlider.isValueChanging()) {
+                        pVolumeSlider.setValue((int)Math.round(pMP.getVolume()
                                 * 100));
                     }
 
@@ -287,8 +121,6 @@ public class Controller extends BorderPane {
                         pSeries.getData().add(new XYChart.Data("Sadness"  , 1));
                         pSeries.getData().add(new XYChart.Data("Surprise"  , 13));
 
-                        flag1 = 0;
-
                     } else if(flag3 == 1 && currentTime.greaterThanOrEqualTo(new Duration(140000)) && currentTime.lessThanOrEqualTo(new Duration(259000))){  // For 3rd vid
                         flag3 = 2;
 
@@ -303,8 +135,6 @@ public class Controller extends BorderPane {
                         pSeries.getData().add(new XYChart.Data("Happiness"  , 15));
                         pSeries.getData().add(new XYChart.Data("Sadness"  , 11));
                         pSeries.getData().add(new XYChart.Data("Surprise"  , 5));
-
-                        flag2 = 0;
 
                     } else if(flag4 == 1 && currentTime.greaterThanOrEqualTo(new Duration(260000)) && currentTime.lessThanOrEqualTo(new Duration(349000))){  // For 4th vid
                         flag4 = 2;
