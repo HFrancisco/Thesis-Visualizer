@@ -1,37 +1,13 @@
 package sample;
 
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.*;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
 public class Controller{
-
-    /*private MediaPlayer mp;
-    private MediaView mediaView;
-    private final boolean repeat = false;
-    private boolean stopRequested = false;
-    private boolean atEndOfMedia = false;
-    private Duration duration;
-    private Slider timeSlider;
-    private Label playTime;
-    private Slider volumeSlider;
-    private HBox mediaBar;
-    private HBox mainBar;*/
 
     private int flag1 = 0;
     private int flag2 = 0;
@@ -45,18 +21,15 @@ public class Controller{
     private int flag10 = 0;
     private int flag11 = 0;
 
-    public Controller(){
 
-    }
-
-    protected void Update_Values(Duration pDuration, XYChart.Series pSeries, Label pPlayTime,
-                                 Slider pTimeSlider, Slider pVolumeSlider, MediaPlayer pMP) {
+    protected void Controller_Process(Duration pDuration, XYChart.Series pSeries, Label pPlayTime,
+                                      Slider pTimeSlider, Slider pVolumeSlider, MediaPlayer pMP) {
 
         if (pPlayTime != null && pTimeSlider != null && pVolumeSlider != null) {
             Platform.runLater(new Runnable() {
                 public void run() {
                     Duration currentTime = pMP.getCurrentTime();
-                    pPlayTime.setText(formatTime(currentTime, pDuration));
+                    pPlayTime.setText(Format_Time(currentTime, pDuration));
                     pTimeSlider.setDisable(pDuration.isUnknown());
                     if (!pTimeSlider.isDisabled()
                             && pDuration.greaterThan(Duration.ZERO)
@@ -69,186 +42,143 @@ public class Controller{
                                 * 100));
                     }
 
-                    if(flag1 == 0 && currentTime.greaterThanOrEqualTo(Duration.ZERO) && currentTime.lessThanOrEqualTo(new Duration(109000)))
-                        flag1 = 1;
-                    else if(flag2 == 0 && currentTime.greaterThanOrEqualTo(new Duration(110000)) && currentTime.lessThanOrEqualTo(new Duration(139000)))
-                        flag2 = 1;
-                    else if(flag3 == 0 && currentTime.greaterThanOrEqualTo(new Duration(140000)) && currentTime.lessThanOrEqualTo(new Duration(259000)))
-                        flag3 = 1;
-                    else if(flag4 == 0 && currentTime.greaterThanOrEqualTo(new Duration(260000)) && currentTime.lessThanOrEqualTo(new Duration(349000)))
-                        flag4 = 1;
-                    else if(flag5 == 0 && currentTime.greaterThanOrEqualTo(new Duration(350000)) && currentTime.lessThanOrEqualTo(new Duration(416000)))
-                        flag5 = 1;
-                    else if(flag6 == 0 && currentTime.greaterThanOrEqualTo(new Duration(417000)) && currentTime.lessThanOrEqualTo(new Duration(537000)))
-                        flag6 = 1;
-                    else if(flag7 == 0 && currentTime.greaterThanOrEqualTo(new Duration(538000)) && currentTime.lessThanOrEqualTo(new Duration(593000)))
-                        flag7 = 1;
-                    else if(flag8 == 0 && currentTime.greaterThanOrEqualTo(new Duration(594000)) && currentTime.lessThanOrEqualTo(new Duration(653000)))
-                        flag8 = 1;
-                    else if(flag9 == 0 && currentTime.greaterThanOrEqualTo(new Duration(654000)) && currentTime.lessThanOrEqualTo(new Duration(713000)))
-                        flag9 = 1;
-                    else if(flag10 == 0 && currentTime.greaterThanOrEqualTo(new Duration(714000)) && currentTime.lessThanOrEqualTo(new Duration(774000)))
-                        flag10 = 1;
-                    else if(flag11 == 0 && currentTime.greaterThanOrEqualTo(new Duration(775000)) && currentTime.lessThanOrEqualTo(new Duration(837000)))
-                        flag11 = 1;
+                    Check_Flags(currentTime);
 
-                    // Update Chart values
-                    if(flag1 == 1 && currentTime.greaterThanOrEqualTo(Duration.ZERO) && currentTime.lessThanOrEqualTo(new Duration(109000))){                      // For 1st vid
-                        flag1 = 2;
-
-                        //pSeries.getData().clear();
-
-                        pSeries.setName("Video 1");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 16));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 4));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 12));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 1));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 9));
-
-                    } else if(flag2 == 1 && currentTime.greaterThanOrEqualTo(new Duration(110000)) && currentTime.lessThanOrEqualTo(new Duration(139000))){  // For 2nd vid
-                        flag2 = 2;
-
-                        //pSeries.getData().clear();
-
-                        //Doritos
-
-                        pSeries.setName("Video 2");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 16));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 4));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 13));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 1));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 13));
-
-                    } else if(flag3 == 1 && currentTime.greaterThanOrEqualTo(new Duration(140000)) && currentTime.lessThanOrEqualTo(new Duration(259000))){  // For 3rd vid
-                        flag3 = 2;
-
-                        //pSeries.getData().clear();
-
-                        //PnG
-
-                        pSeries.setName("Video 3");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 19));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 1));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 15));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 11));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 5));
-
-                    } else if(flag4 == 1 && currentTime.greaterThanOrEqualTo(new Duration(260000)) && currentTime.lessThanOrEqualTo(new Duration(349000))){  // For 4th vid
-                        flag4 = 2;
-
-                        //pSeries.getData().clear();
-
-                        pSeries.setName("Video 4");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 19));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 1));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 17));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 8));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 6));
-
-                    } else if(flag5 == 1 && currentTime.greaterThanOrEqualTo(new Duration(350000)) && currentTime.lessThanOrEqualTo(new Duration(416000))){  // For 5th vid
-                        flag5 = 2;
-
-                        //pSeries.getData().clear();
-
-                        //Hornbach
-
-                        pSeries.setName("Video 5");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 10));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 10));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 8));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 7));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 12));
-
-                    } else if(flag6 == 1 && currentTime.greaterThanOrEqualTo(new Duration(417000)) && currentTime.lessThanOrEqualTo(new Duration(537000))){  // For 6th vid
-                        flag6 = 2;
-
-                        //pSeries.getData().clear();
-
-                        pSeries.setName("Video 6");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 16));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 4));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 17));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 1));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 3));
-
-                    } else if(flag7 == 1 && currentTime.greaterThanOrEqualTo(new Duration(538000)) && currentTime.lessThanOrEqualTo(new Duration(593000))){  // For 7th vid
-                        flag7 = 2;
-
-                        //pSeries.getData().clear();
-
-                        pSeries.setName("Video 7");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 4));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 16));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 2));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 1));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 1));
-
-                    } else if(flag8 == 1 && currentTime.greaterThanOrEqualTo(new Duration(594000)) && currentTime.lessThanOrEqualTo(new Duration(653000))){  // For 8th vid
-                        flag8 = 2;
-
-                        //pSeries.getData().clear();
-
-                        pSeries.setName("Video 8");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 19));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 1));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 19));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 0));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 4));
-
-                    } else if(flag9 == 1 && currentTime.greaterThanOrEqualTo(new Duration(654000)) && currentTime.lessThanOrEqualTo(new Duration(713000))){  // For 9th vid
-                        flag9 = 2;
-
-                        //pSeries.getData().clear();
-
-                        pSeries.setName("Video 9");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 15));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 5));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 2));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 6));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 4));
-
-                    } else if(flag10 == 1 && currentTime.greaterThanOrEqualTo(new Duration(714000)) && currentTime.lessThanOrEqualTo(new Duration(774000))){  // For 10th vid
-                        flag10 = 2;
-
-                        //pSeries.getData().clear();
-
-                        pSeries.setName("Video 10");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 12));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 8));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 13));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 1));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 9));
-
-                    } else if(flag11 == 1 && currentTime.greaterThanOrEqualTo(new Duration(775000)) && currentTime.lessThanOrEqualTo(new Duration(837000))){  // For 11th vid
-                        flag11 = 2;
-
-                        //pSeries.getData().clear();
-
-                        pSeries.setName("Video 11");
-
-                        pSeries.getData().add(new XYChart.Data("Interest", 15));
-                        pSeries.getData().add(new XYChart.Data("Indifferent"  , 5));
-                        pSeries.getData().add(new XYChart.Data("Happiness"  , 12));
-                        pSeries.getData().add(new XYChart.Data("Sadness"  , 0));
-                        pSeries.getData().add(new XYChart.Data("Surprise"  , 3));
-
-                    }
+                    Check_Time(currentTime, pSeries);
                 }
             });
         }
     }
 
-    private static String formatTime(Duration elapsed, Duration duration) {
+
+    private void Check_Flags(Duration pTime){
+
+        if(flag1 == 0 && pTime.greaterThanOrEqualTo(Duration.ZERO) && pTime.lessThanOrEqualTo(new Duration(109000)))
+            flag1 = 1;
+        else if(flag2 == 0 && pTime.greaterThanOrEqualTo(new Duration(110000)) && pTime.lessThanOrEqualTo(new Duration(139000)))
+            flag2 = 1;
+        else if(flag3 == 0 && pTime.greaterThanOrEqualTo(new Duration(140000)) && pTime.lessThanOrEqualTo(new Duration(259000)))
+            flag3 = 1;
+        else if(flag4 == 0 && pTime.greaterThanOrEqualTo(new Duration(260000)) && pTime.lessThanOrEqualTo(new Duration(349000)))
+            flag4 = 1;
+        else if(flag5 == 0 && pTime.greaterThanOrEqualTo(new Duration(350000)) && pTime.lessThanOrEqualTo(new Duration(416000)))
+            flag5 = 1;
+        else if(flag6 == 0 && pTime.greaterThanOrEqualTo(new Duration(417000)) && pTime.lessThanOrEqualTo(new Duration(537000)))
+            flag6 = 1;
+        else if(flag7 == 0 && pTime.greaterThanOrEqualTo(new Duration(538000)) && pTime.lessThanOrEqualTo(new Duration(593000)))
+            flag7 = 1;
+        else if(flag8 == 0 && pTime.greaterThanOrEqualTo(new Duration(594000)) && pTime.lessThanOrEqualTo(new Duration(653000)))
+            flag8 = 1;
+        else if(flag9 == 0 && pTime.greaterThanOrEqualTo(new Duration(654000)) && pTime.lessThanOrEqualTo(new Duration(713000)))
+            flag9 = 1;
+        else if(flag10 == 0 && pTime.greaterThanOrEqualTo(new Duration(714000)) && pTime.lessThanOrEqualTo(new Duration(774000)))
+            flag10 = 1;
+        else if(flag11 == 0 && pTime.greaterThanOrEqualTo(new Duration(775000)) && pTime.lessThanOrEqualTo(new Duration(837000)))
+            flag11 = 1;
+
+    }
+
+    private void Check_Time(Duration pTime, XYChart.Series pSeries){
+
+        // Update Chart values
+        if(flag1 == 1 && pTime.greaterThanOrEqualTo(Duration.ZERO) && pTime.lessThanOrEqualTo(new Duration(109000))){                      // For 1st vid
+            flag1 = 2;
+
+            pSeries.setName("Video 1");
+
+            Update_Values(pSeries, 16, 4, 12, 1, 9);
+
+        } else if(flag2 == 1 && pTime.greaterThanOrEqualTo(new Duration(110000)) && pTime.lessThanOrEqualTo(new Duration(139000))){  // For 2nd vid
+            flag2 = 2;
+
+            //Doritos
+
+            pSeries.setName("Video 2");
+
+            Update_Values(pSeries, 16, 4, 13, 1, 13);
+
+        } else if(flag3 == 1 && pTime.greaterThanOrEqualTo(new Duration(140000)) && pTime.lessThanOrEqualTo(new Duration(259000))){  // For 3rd vid
+            flag3 = 2;
+
+            //PnG
+
+            pSeries.setName("Video 3");
+
+            Update_Values(pSeries, 19, 1, 15, 11, 5);
+
+        } else if(flag4 == 1 && pTime.greaterThanOrEqualTo(new Duration(260000)) && pTime.lessThanOrEqualTo(new Duration(349000))){  // For 4th vid
+            flag4 = 2;
+
+            pSeries.setName("Video 4");
+
+            Update_Values(pSeries, 19, 1, 17, 8, 6);
+
+        } else if(flag5 == 1 && pTime.greaterThanOrEqualTo(new Duration(350000)) && pTime.lessThanOrEqualTo(new Duration(416000))){  // For 5th vid
+            flag5 = 2;
+
+            //Hornbach
+
+            pSeries.setName("Video 5");
+
+            Update_Values(pSeries, 10, 10, 8, 7, 12);
+
+        } else if(flag6 == 1 && pTime.greaterThanOrEqualTo(new Duration(417000)) && pTime.lessThanOrEqualTo(new Duration(537000))){  // For 6th vid
+            flag6 = 2;
+
+            pSeries.setName("Video 6");
+
+            Update_Values(pSeries, 16, 4, 17, 1, 3);
+
+        } else if(flag7 == 1 && pTime.greaterThanOrEqualTo(new Duration(538000)) && pTime.lessThanOrEqualTo(new Duration(593000))){  // For 7th vid
+            flag7 = 2;
+
+            pSeries.setName("Video 7");
+
+            Update_Values(pSeries, 4, 16, 2, 1, 1);
+
+        } else if(flag8 == 1 && pTime.greaterThanOrEqualTo(new Duration(594000)) && pTime.lessThanOrEqualTo(new Duration(653000))){  // For 8th vid
+            flag8 = 2;
+
+            pSeries.setName("Video 8");
+
+            Update_Values(pSeries, 19, 1, 19, 0, 4);
+
+        } else if(flag9 == 1 && pTime.greaterThanOrEqualTo(new Duration(654000)) && pTime.lessThanOrEqualTo(new Duration(713000))){  // For 9th vid
+            flag9 = 2;
+
+            pSeries.setName("Video 9");
+
+            Update_Values(pSeries, 15, 5, 2, 6, 4);
+
+        } else if(flag10 == 1 && pTime.greaterThanOrEqualTo(new Duration(714000)) && pTime.lessThanOrEqualTo(new Duration(774000))){  // For 10th vid
+            flag10 = 2;
+
+            pSeries.setName("Video 10");
+
+            Update_Values(pSeries, 12, 8, 13, 1, 9);
+
+        } else if(flag11 == 1 && pTime.greaterThanOrEqualTo(new Duration(775000)) && pTime.lessThanOrEqualTo(new Duration(837000))){  // For 11th vid
+            flag11 = 2;
+
+            pSeries.setName("Video 11");
+
+            Update_Values(pSeries, 15, 5, 12, 0, 3);
+
+        }
+
+    }
+
+    private void Update_Values(XYChart.Series pSeries, int pInt, int pInd, int pHap, int pSad, int pSur){
+
+        pSeries.getData().add(new XYChart.Data("Interest", pInt));
+        pSeries.getData().add(new XYChart.Data("Indifferent"  , pInd));
+        pSeries.getData().add(new XYChart.Data("Happiness"  , pHap));
+        pSeries.getData().add(new XYChart.Data("Sadness"  , pSad));
+        pSeries.getData().add(new XYChart.Data("Surprise"  , pSur));
+
+    }
+
+    private static String Format_Time(Duration elapsed, Duration duration) {
         int intElapsed = (int)Math.floor(elapsed.toSeconds());
         int elapsedHours = intElapsed / (60 * 60);
         if (elapsedHours > 0) {

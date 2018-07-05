@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -159,7 +158,7 @@ public class UI_Controller extends BorderPane {
         mp.currentTimeProperty().addListener(new InvalidationListener()
         {
             public void invalidated(Observable ov) {
-                controller.Update_Values(duration, pSeries, playTime,
+                controller.Controller_Process(duration, pSeries, playTime,
                         timeSlider, volumeSlider, mp);
             }
         });
@@ -185,7 +184,7 @@ public class UI_Controller extends BorderPane {
         mp.setOnReady(new Runnable() {
             public void run() {
                 duration = mp.getMedia().getDuration();
-                controller.Update_Values(duration, pSeries, playTime,
+                controller.Controller_Process(duration, pSeries, playTime,
                         timeSlider, volumeSlider, mp);
             }
         });
