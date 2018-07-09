@@ -1,6 +1,10 @@
 package sample;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -8,10 +12,18 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Controller{
 
     private CSV_Reader csvReader = new CSV_Reader();
+    private List<Time_Segment> timeSegmentList = new ArrayList<>();
+    int[] chartData = new int[5];
+
+    private int[] numPeopleEmotionArray = new int[5];
+
     private int flag1 = 0;
     private int flag2 = 0;
     private int flag3 = 0;
@@ -23,6 +35,16 @@ public class Controller{
     private int flag9 = 0;
     private int flag10 = 0;
     private int flag11 = 0;
+
+    public Controller(){
+
+        try {
+            timeSegmentList = csvReader.Read();
+        } catch(IOException e){
+            System.out.println("Error in CSV Reader.");
+        }
+
+    }
 
     protected void Controller_Process(Duration pDuration, XYChart.Series pSeries, Label pPlayTime,
                                       Slider pTimeSlider, Slider pVolumeSlider, MediaPlayer pMP) {
@@ -44,15 +66,6 @@ public class Controller{
                                 * 100));
                     }
 
-                    try{
-                        csvReader.Read();
-                    } catch (IOException e){
-                        System.out.println("Error in CSV Reader");
-                    }
-
-                    Check_Flags(currentTime);
-
-                    Check_Time(currentTime, pSeries);
                 }
             });
         }
@@ -185,7 +198,7 @@ public class Controller{
 
     }
 
-    private static String Format_Time(Duration elapsed, Duration duration) {
+    public static String Format_Time(Duration elapsed, Duration duration) {
         int intElapsed = (int)Math.floor(elapsed.toSeconds());
         int elapsedHours = intElapsed / (60 * 60);
         if (elapsedHours > 0) {
@@ -224,4 +237,38 @@ public class Controller{
         }
     }
 
+    public int[] Get_Values(Duration pCurrTime){
+
+        for (int i = 0; i < numPeopleEmotionArray.length; i++)
+            numPeopleEmotionArray[i] = 0;
+
+        for(int i = 0; i < timeSegmentList.size(); i++){
+
+            if(pCurrTime.greaterThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getStartTime())) &&
+                    pCurrTime.lessThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getEndTime()))){
+
+                switch (timeSegmentList.get(i).getEmotion()){
+                    case "Interest":
+                        numPeopleEmotionArray[0]++;
+                        break;
+                    case "Indifferent":
+                        numPeopleEmotionArray[1]++;
+                        break;
+                    case "Happiness":
+                        numPeopleEmotionArray[2]++;
+                        break;
+                    case "Sadness":
+                        numPeopleEmotionArray[3]++;
+                        break;
+                    case "Surprise":
+                        numPeopleEmotionArray[4]++;
+                        break;
+                }
+            }
+
+        }
+
+        return numPeopleEmotionArray;
+
+    }
 }

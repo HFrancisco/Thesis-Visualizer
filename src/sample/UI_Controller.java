@@ -1,5 +1,6 @@
 package sample;
 
+import javafx.application.Platform;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,15 +22,24 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UI_Controller extends BorderPane {
 
     private Controller controller = new Controller();
+    private CSV_Reader csvReader = new CSV_Reader();
+    private int[] chartData = new int[5];
+    private List<Time_Segment> timeSegmentList = new ArrayList<>();
+
+
     private MediaPlayer mp;
     private MediaView mediaView;
     private final boolean repeat = false;
     private boolean stopRequested = false;
     private boolean atEndOfMedia = false;
-    private Duration duration;
+    private Duration duration = Duration.ZERO;
     private Slider volumeSlider;
     private HBox mediaBar;
     private HBox mainBar;
@@ -104,13 +114,88 @@ public class UI_Controller extends BorderPane {
         setTop(mainBar);
         setBottom(mediaBar);
 
-        mp.currentTimeProperty().addListener(new InvalidationListener()
-        {
-            public void invalidated(Observable ov) {
-                controller.Controller_Process(duration, series, playTime,
-                        timeSlider, volumeSlider, mp);
-            }
-        });
+        Start_Timeline();
+
+    }
+
+    public void Start_Timeline(){
+
+        try {
+            timeSegmentList = csvReader.Read();
+            //System.out.println("Size of TimeSegmentList is: " + timeSegmentList.size());
+        } catch(IOException e){
+            System.out.println("Error in CSV Reader.");
+        }
+
+        Timeline tl = new Timeline();
+        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(2.5),
+                new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent actionEvent) {
+
+                        Duration currTime = mp.getCurrentTime();
+                        //System.out.println("Current Time is: " + currTime);
+
+                        for(int i = 0; i < timeSegmentList.size(); i++){
+
+                           /* System.out.println("");
+                            System.out.println("Emotion  at index " + i + " is: " + timeSegmentList.get(i).getEmotion());
+                            System.out.println("Start Time is " + timeSegmentList.get(i).getStartTime());
+                            System.out.println("End Time is " + timeSegmentList.get(i).getEndTime());
+                            System.out.println("Curr Time is " + currTime);*/
+
+
+                            if(currTime.greaterThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getStartTime()).subtract(Duration.seconds(1))) &&
+                                    currTime.lessThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getEndTime()).add(Duration.seconds(1)))){
+
+                                if(timeSegmentList.get(i).getEmotion().equals("Interest")){
+                                    chartData[0]++;
+                                    /*System.out.println("Goes to Interest");
+                                    System.out.println("");*/
+                                }
+
+                                if(timeSegmentList.get(i).getEmotion().equals("Indifferent")){
+                                    chartData[1]++;
+                                    /*System.out.println("Goes to Indifferent");
+                                    System.out.println("");*/
+                                }
+
+                                if(timeSegmentList.get(i).getEmotion().equals("Happiness")){
+                                    chartData[2]++;
+                                    /*System.out.println("Goes to Happiness");
+                                    System.out.println("");*/
+                                }
+
+                                if(timeSegmentList.get(i).getEmotion().equals("Sadness")){
+                                    chartData[3]++;
+                                    /*System.out.println("Goes to Sadness");
+                                    System.out.println("");*/
+                                }
+
+                                if(timeSegmentList.get(i).getEmotion().equals("Surprise")){
+                                    chartData[4]++;
+                                    /*System.out.println("Goes to Surprise" );
+                                    System.out.println("");*/
+                                }
+
+                            }
+                        }
+
+                        series.getData().add(new XYChart.Data("Interest", chartData[0]));
+                        series.getData().add(new XYChart.Data("Indifferent"  , chartData[1]));
+                        series.getData().add(new XYChart.Data("Happiness"  , chartData[2]));
+                        series.getData().add(new XYChart.Data("Sadness"  , chartData[3]));
+                        series.getData().add(new XYChart.Data("Surprise"  , chartData[4]));
+
+                        //chartData = controller.Get_Values(currTime);
+
+                        for (int i = 0; i < chartData.length; i++)
+                            chartData[i] = 0;
+
+                    }
+                }));
+        tl.setCycleCount(Timeline.INDEFINITE);
+        tl.play();
+
     }
 
     private void Add_Chart(){
@@ -128,23 +213,13 @@ public class UI_Controller extends BorderPane {
         series.setName("Video 1");
 
         // Initial Values
-        series.getData().add(new XYChart.Data("Interest", 16));
-        series.getData().add(new XYChart.Data("Indifferent"  , 4));
-        series.getData().add(new XYChart.Data("Happiness"  , 12));
-        series.getData().add(new XYChart.Data("Sadness"  , 1));
-        series.getData().add(new XYChart.Data("Surprise"  , 9));
+        series.getData().add(new XYChart.Data("Interest", 1));
+        series.getData().add(new XYChart.Data("Indifferent"  , 2));
+        series.getData().add(new XYChart.Data("Happiness"  , 0));
+        series.getData().add(new XYChart.Data("Sadness"  , 0));
+        series.getData().add(new XYChart.Data("Surprise"  , 0));
 
         barChart.getData().add(series);
-
-        Timeline tl = new Timeline();
-        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1),
-                new EventHandler<ActionEvent>() {
-                    @Override public void handle(ActionEvent actionEvent) {
-
-                    }
-                }));
-        tl.setCycleCount(Animation.INDEFINITE);
-        tl.play();
     }
 
     private void Add_PlayButton(BarChart  pBarChart, XYChart.Series pSeries){
@@ -176,6 +251,14 @@ public class UI_Controller extends BorderPane {
             }
         });
 
+        mp.currentTimeProperty().addListener(new InvalidationListener()
+        {
+            public void invalidated(Observable ov) {
+                controller.Controller_Process(duration, pSeries, playTime,
+                        timeSlider, volumeSlider, mp);
+            }
+        });
+
         mp.setOnPlaying(new Runnable() {
             public void run() {
                 if (stopRequested) {
@@ -189,7 +272,6 @@ public class UI_Controller extends BorderPane {
 
         mp.setOnPaused(new Runnable() {
             public void run() {
-                System.out.println("onPaused");
                 playButton.setText(">");
             }
         });

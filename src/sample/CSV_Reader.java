@@ -5,13 +5,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class CSV_Reader {
 
-    public void Read() throws  IOException{
+    public List Read() throws  IOException{
 
         // open file input stream
         BufferedReader reader = new BufferedReader(new FileReader("" +
@@ -51,6 +52,8 @@ public class CSV_Reader {
 
         //close reader
         reader.close();
+
+        return timeSegmentList;
     }
 
 }
