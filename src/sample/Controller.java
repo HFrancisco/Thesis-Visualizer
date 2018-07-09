@@ -7,8 +7,11 @@ import javafx.scene.control.Slider;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
+import java.io.IOException;
+
 public class Controller{
 
+    private CSV_Reader csvReader = new CSV_Reader();
     private int flag1 = 0;
     private int flag2 = 0;
     private int flag3 = 0;
@@ -20,7 +23,6 @@ public class Controller{
     private int flag9 = 0;
     private int flag10 = 0;
     private int flag11 = 0;
-
 
     protected void Controller_Process(Duration pDuration, XYChart.Series pSeries, Label pPlayTime,
                                       Slider pTimeSlider, Slider pVolumeSlider, MediaPlayer pMP) {
@@ -42,6 +44,12 @@ public class Controller{
                                 * 100));
                     }
 
+                    try{
+                        csvReader.Read();
+                    } catch (IOException e){
+                        System.out.println("Error in CSV Reader");
+                    }
+
                     Check_Flags(currentTime);
 
                     Check_Time(currentTime, pSeries);
@@ -49,7 +57,6 @@ public class Controller{
             });
         }
     }
-
 
     private void Check_Flags(Duration pTime){
 

@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.event.ActionEvent;
@@ -100,6 +103,14 @@ public class UI_Controller extends BorderPane {
 
         setTop(mainBar);
         setBottom(mediaBar);
+
+        mp.currentTimeProperty().addListener(new InvalidationListener()
+        {
+            public void invalidated(Observable ov) {
+                controller.Controller_Process(duration, series, playTime,
+                        timeSlider, volumeSlider, mp);
+            }
+        });
     }
 
     private void Add_Chart(){
@@ -124,6 +135,16 @@ public class UI_Controller extends BorderPane {
         series.getData().add(new XYChart.Data("Surprise"  , 9));
 
         barChart.getData().add(series);
+
+        Timeline tl = new Timeline();
+        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(1),
+                new EventHandler<ActionEvent>() {
+                    @Override public void handle(ActionEvent actionEvent) {
+
+                    }
+                }));
+        tl.setCycleCount(Animation.INDEFINITE);
+        tl.play();
     }
 
     private void Add_PlayButton(BarChart  pBarChart, XYChart.Series pSeries){
@@ -152,14 +173,6 @@ public class UI_Controller extends BorderPane {
                 } else {
                     mp.pause();
                 }
-            }
-        });
-
-        mp.currentTimeProperty().addListener(new InvalidationListener()
-        {
-            public void invalidated(Observable ov) {
-                controller.Controller_Process(duration, pSeries, playTime,
-                        timeSlider, volumeSlider, mp);
             }
         });
 
