@@ -1,7 +1,5 @@
 package sample;
 
-import javafx.application.Platform;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.InvalidationListener;
@@ -61,7 +59,6 @@ public class UI_Controller extends BorderPane {
         Pane mvPane = new Pane() {};
         mvPane.getChildren().add(mediaView);
         mvPane.setStyle("-fx-background-color: #9b9a9a;");
-        //setCenter(mvPane);
 
         mediaBar = new HBox();
         mediaBar.setAlignment(Pos.BOTTOM_LEFT);
@@ -71,7 +68,6 @@ public class UI_Controller extends BorderPane {
 
         mainBar = new HBox();
         mainBar.setAlignment(Pos.TOP_LEFT);
-        //mainBar.setPadding(new Insets(5, 10, 5, 10));
         mainBar.setMaxWidth(1780);
         BorderPane.setAlignment(mainBar, Pos.TOP_LEFT);
 
@@ -122,7 +118,6 @@ public class UI_Controller extends BorderPane {
 
         try {
             timeSegmentList = csvReader.Read();
-            //System.out.println("Size of TimeSegmentList is: " + timeSegmentList.size());
         } catch(IOException e){
             System.out.println("Error in CSV Reader.");
         }
@@ -133,48 +128,30 @@ public class UI_Controller extends BorderPane {
                     @Override public void handle(ActionEvent actionEvent) {
 
                         Duration currTime = mp.getCurrentTime();
-                        //System.out.println("Current Time is: " + currTime);
 
                         for(int i = 0; i < timeSegmentList.size(); i++){
-
-                           /* System.out.println("");
-                            System.out.println("Emotion  at index " + i + " is: " + timeSegmentList.get(i).getEmotion());
-                            System.out.println("Start Time is " + timeSegmentList.get(i).getStartTime());
-                            System.out.println("End Time is " + timeSegmentList.get(i).getEndTime());
-                            System.out.println("Curr Time is " + currTime);*/
-
 
                             if(currTime.greaterThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getStartTime()).subtract(Duration.seconds(1))) &&
                                     currTime.lessThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getEndTime()).add(Duration.seconds(1)))){
 
                                 if(timeSegmentList.get(i).getEmotion().equals("Interest")){
                                     chartData[0]++;
-                                    /*System.out.println("Goes to Interest");
-                                    System.out.println("");*/
                                 }
 
                                 if(timeSegmentList.get(i).getEmotion().equals("Indifferent")){
                                     chartData[1]++;
-                                    /*System.out.println("Goes to Indifferent");
-                                    System.out.println("");*/
                                 }
 
                                 if(timeSegmentList.get(i).getEmotion().equals("Happiness")){
                                     chartData[2]++;
-                                    /*System.out.println("Goes to Happiness");
-                                    System.out.println("");*/
                                 }
 
                                 if(timeSegmentList.get(i).getEmotion().equals("Sadness")){
                                     chartData[3]++;
-                                    /*System.out.println("Goes to Sadness");
-                                    System.out.println("");*/
                                 }
 
                                 if(timeSegmentList.get(i).getEmotion().equals("Surprise")){
                                     chartData[4]++;
-                                    /*System.out.println("Goes to Surprise" );
-                                    System.out.println("");*/
                                 }
 
                             }
@@ -185,8 +162,6 @@ public class UI_Controller extends BorderPane {
                         series.getData().add(new XYChart.Data("Happiness"  , chartData[2]));
                         series.getData().add(new XYChart.Data("Sadness"  , chartData[3]));
                         series.getData().add(new XYChart.Data("Surprise"  , chartData[4]));
-
-                        //chartData = controller.Get_Values(currTime);
 
                         for (int i = 0; i < chartData.length; i++)
                             chartData[i] = 0;

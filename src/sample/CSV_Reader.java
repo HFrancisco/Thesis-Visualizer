@@ -19,8 +19,8 @@ public class CSV_Reader {
                 "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/SegmentsOnlyV2.csv"));
 
         // read file line by line
-        String line = null;
-        Scanner scanner = null;
+        String line;
+        Scanner scanner;
 
         int index = 0;
         List<Time_Segment> timeSegmentList = new ArrayList<>();

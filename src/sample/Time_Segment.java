@@ -1,7 +1,6 @@
 package sample;
 
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 
 public class Time_Segment {
 
