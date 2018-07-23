@@ -74,7 +74,6 @@ public class Selection_Window extends BorderPane {
             }
         });
 
-
         vBox.setAlignment(Pos.CENTER);
         vBox.setSpacing(10);
 

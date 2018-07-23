@@ -84,9 +84,9 @@ public class UI_Controller extends BorderPane {
         mediaView.setFitWidth(900);
         mediaView.setFitHeight(400);
 
-        Pane mvPane = new Pane() {};
+        //Pane mvPane = new Pane() {};
         //mvPane.getChildren().add(mediaView);
-        mvPane.setStyle("-fx-background-color: #9b9a9a;");
+        //mvPane.setStyle("-fx-background-color: #9b9a9a;");
 
         mediaBar = new HBox();
         //mediaBar.setAlignment(Pos.BOTTOM_LEFT);
@@ -94,17 +94,17 @@ public class UI_Controller extends BorderPane {
         //mediaBar.setMaxWidth(950);
         //BorderPane.setAlignment(mediaBar, Pos.BOTTOM_LEFT);
 
-        mainBar = new HBox();
+        //mainBar = new HBox();
         //mainBar.setAlignment(Pos.TOP_LEFT);
         //mainBar.setMaxWidth(950);
         //BorderPane.setAlignment(mainBar, Pos.TOP_LEFT);
 
-        mainBar.getChildren().add(mvPane);
+        //mainBar.getChildren().add(mvPane);
 
         vBox = new VBox();
         vBox.setAlignment(Pos.TOP_LEFT);
         vBox.getChildren().add(mediaView);
-        vBox.getChildren().add(mainBar);
+        //vBox.getChildren().add(mainBar);
         BorderPane.setAlignment(vBox, Pos.TOP_LEFT);
 
 
@@ -115,7 +115,7 @@ public class UI_Controller extends BorderPane {
         //mainBar.getChildren().add(barChart);
 
         // Play Button
-        Add_PlayButton(barChart, series);
+        Add_PlayButton(series);
         mediaBar.getChildren().add(playButton);
 
         // Spacer
@@ -157,15 +157,11 @@ public class UI_Controller extends BorderPane {
         vBox.getChildren().add(lineChart);
         setTop(vBox);
 
-
         Start_Timeline(dgPhase);
 
     }
 
     public void Start_Timeline(int dgPhase){
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss");
-        Date date = new Date();
 
         try {
             timeSegmentList = csvReader.Read(dgPhase);
@@ -179,7 +175,6 @@ public class UI_Controller extends BorderPane {
                     @Override public void handle(ActionEvent actionEvent) {
 
                         Duration currTime = mp.getCurrentTime();
-                        System.out.println("Currtime is " +currTime);
                         String[] splitParts = currTime.toString().split("\\.");
 
                         for(int i = 0; i < timeSegmentList.size(); i++){
@@ -297,7 +292,7 @@ public class UI_Controller extends BorderPane {
 
     }
 
-    private void Add_PlayButton(BarChart  pBarChart, XYChart.Series pSeries){
+    private void Add_PlayButton(XYChart.Series pSeries){
 
         // Add listeners to Play Button
         playButton.setOnAction(new EventHandler<ActionEvent>() {

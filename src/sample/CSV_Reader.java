@@ -16,20 +16,15 @@ public class CSV_Reader {
 
     public List Read(int dgPhase) throws  IOException{
 
-
-
         if(dgPhase == 1){
 
             // open file input stream
             reader = new BufferedReader(new FileReader("" +
                     "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/SegmentsOnlyV2.csv"));
-
         } else if(dgPhase == 2){
-
             // open file input stream
             reader = new BufferedReader(new FileReader("" +
                     "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/SegmentsOnlyV2Phase2.csv"));
-
         }
 
         // read file line by line
