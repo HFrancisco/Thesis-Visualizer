@@ -48,7 +48,7 @@ public class Time_Segment {
 
     public void setEmotion(String emotion) {
 
-        switch (emotion) {
+        switch (emotion.trim()) {
             case "inte":
                 this.emotion = "Interest";
                 break;

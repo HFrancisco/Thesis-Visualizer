@@ -16,7 +16,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Thesis Visualizer V2");
         Group root = new Group();
-        Scene scene = new Scene(root, 1800, 760);
+        Scene scene = new Scene(root, 900, 760);
 
         // create media player
         Media media = new Media(MEDIA_URL);
@@ -30,7 +30,6 @@ public class Main extends Application {
         primaryStage.sizeToScene();
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

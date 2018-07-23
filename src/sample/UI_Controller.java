@@ -4,24 +4,30 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.stage.Screen;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UI_Controller extends BorderPane {
@@ -30,6 +36,7 @@ public class UI_Controller extends BorderPane {
     private CSV_Reader csvReader = new CSV_Reader();
     private int[] chartData = new int[5];
     private List<Time_Segment> timeSegmentList = new ArrayList<>();
+    private int numParticipants = 20;
 
 
     private MediaPlayer mp;
@@ -41,9 +48,19 @@ public class UI_Controller extends BorderPane {
     private Slider volumeSlider;
     private HBox mediaBar;
     private HBox mainBar;
+    private VBox vBox;
 
+    // Barchart
     private BarChart barChart;
     private XYChart.Series series;
+
+    // Linechart
+    private LineChart lineChart;
+    private XYChart.Series interestSeries = new XYChart.Series();
+    private XYChart.Series happySeries = new XYChart.Series();
+    private XYChart.Series sadSeries = new XYChart.Series();
+    private XYChart.Series surpriseSeries = new XYChart.Series();
+
     private Slider timeSlider;
     private Label playTime;
     private Label spacer;
@@ -56,28 +73,46 @@ public class UI_Controller extends BorderPane {
         this.mp = mp;
         setStyle("-fx-background-color: #9b9a9a;");
         mediaView = new MediaView(mp);
+
+        /*DoubleProperty mvw = mediaView.fitWidthProperty();
+        DoubleProperty mvh = mediaView.fitHeightProperty();
+        mvw.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
+        mvh.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
+        mediaView.setPreserveRatio(true);*/
+
+        mediaView.setPreserveRatio(false);
+        mediaView.setFitWidth(900);
+        mediaView.setFitHeight(400);
+
         Pane mvPane = new Pane() {};
-        mvPane.getChildren().add(mediaView);
+        //mvPane.getChildren().add(mediaView);
         mvPane.setStyle("-fx-background-color: #9b9a9a;");
 
         mediaBar = new HBox();
-        mediaBar.setAlignment(Pos.BOTTOM_LEFT);
-        mediaBar.setPadding(new Insets(0, 0, 5, 10));
-        mediaBar.setMaxWidth(1280);
-        BorderPane.setAlignment(mediaBar, Pos.BOTTOM_LEFT);
+        //mediaBar.setAlignment(Pos.BOTTOM_LEFT);
+        //mediaBar.setPadding(new Insets(0, 0, 0, 0));
+        //mediaBar.setMaxWidth(950);
+        //BorderPane.setAlignment(mediaBar, Pos.BOTTOM_LEFT);
 
         mainBar = new HBox();
-        mainBar.setAlignment(Pos.TOP_LEFT);
-        mainBar.setMaxWidth(1780);
-        BorderPane.setAlignment(mainBar, Pos.TOP_LEFT);
+        //mainBar.setAlignment(Pos.TOP_LEFT);
+        //mainBar.setMaxWidth(950);
+        //BorderPane.setAlignment(mainBar, Pos.TOP_LEFT);
 
         mainBar.getChildren().add(mvPane);
+
+        vBox = new VBox();
+        vBox.setAlignment(Pos.TOP_LEFT);
+        vBox.getChildren().add(mediaView);
+        vBox.getChildren().add(mainBar);
+        BorderPane.setAlignment(vBox, Pos.TOP_LEFT);
+
 
         // Creating and Adding UI Elements
 
         // Bar Chart of data
-        Add_Chart();
-        mainBar.getChildren().add(barChart);
+        //Add_Chart();
+        //mainBar.getChildren().add(barChart);
 
         // Play Button
         Add_PlayButton(barChart, series);
@@ -107,14 +142,27 @@ public class UI_Controller extends BorderPane {
         Add_VolumeSlider();
         mediaBar.getChildren().add(volumeSlider);
 
-        setTop(mainBar);
-        setBottom(mediaBar);
+        //setTop(mainBar);
+        //setBottom(mediaBar);
+
+        // Line Chart of data
+        Add_LineChart();
+        lineChart.setMaxHeight(320);
+        lineChart.setMinHeight(320);
+        lineChart.setPrefHeight(320);
+
+        vBox.getChildren().add(mediaBar);
+        vBox.getChildren().add(lineChart);
+        setTop(vBox);
 
         Start_Timeline();
 
     }
 
     public void Start_Timeline(){
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss");
+        Date date = new Date();
 
         try {
             timeSegmentList = csvReader.Read();
@@ -123,11 +171,13 @@ public class UI_Controller extends BorderPane {
         }
 
         Timeline tl = new Timeline();
-        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(2.5),
+        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5),
                 new EventHandler<ActionEvent>() {
                     @Override public void handle(ActionEvent actionEvent) {
 
                         Duration currTime = mp.getCurrentTime();
+                        System.out.println("Currtime is " +currTime);
+                        String[] splitParts = currTime.toString().split("\\.");
 
                         for(int i = 0; i < timeSegmentList.size(); i++){
 
@@ -157,11 +207,10 @@ public class UI_Controller extends BorderPane {
                             }
                         }
 
-                        series.getData().add(new XYChart.Data("Interest", chartData[0]));
-                        series.getData().add(new XYChart.Data("Indifferent"  , chartData[1]));
-                        series.getData().add(new XYChart.Data("Happiness"  , chartData[2]));
-                        series.getData().add(new XYChart.Data("Sadness"  , chartData[3]));
-                        series.getData().add(new XYChart.Data("Surprise"  , chartData[4]));
+                        interestSeries.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
+                        happySeries.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
+                        sadSeries.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
+                        surpriseSeries.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[4])));
 
                         for (int i = 0; i < chartData.length; i++)
                             chartData[i] = 0;
@@ -195,6 +244,26 @@ public class UI_Controller extends BorderPane {
         series.getData().add(new XYChart.Data("Surprise"  , 0));
 
         barChart.getData().add(series);
+    }
+
+    private void Add_LineChart(){
+
+        NumberAxis xAxis = new NumberAxis(0, 840000, 10000);
+        xAxis.setLabel("Duration (ms)");
+
+        NumberAxis yAxis = new NumberAxis(0, 100, 10);
+        yAxis.setLabel("Percentage");
+
+        lineChart = new LineChart(xAxis, yAxis);
+        lineChart.setCreateSymbols(false);
+
+        interestSeries.setName("Interested");
+        happySeries.setName("Happiness");
+        sadSeries.setName("Sadness");
+        surpriseSeries.setName("Surprise");
+
+        lineChart.getData().addAll(interestSeries, happySeries, sadSeries, surpriseSeries);
+
     }
 
     private void Add_PlayButton(BarChart  pBarChart, XYChart.Series pSeries){
@@ -322,6 +391,13 @@ public class UI_Controller extends BorderPane {
                 }
             }
         });
+    }
+
+    private int Get_Percentage(int pNum){
+
+        int percentage = (int) (pNum * 100.0f) / numParticipants;
+
+        return percentage;
     }
 
 }
