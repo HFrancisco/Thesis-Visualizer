@@ -36,7 +36,7 @@ public class UI_Controller extends BorderPane {
     private CSV_Reader csvReader = new CSV_Reader();
     private int[] chartData = new int[5];
     private List<Time_Segment> timeSegmentList = new ArrayList<>();
-    private int numParticipants = 20;
+    private int numParticipants;
 
 
     private MediaPlayer mp;
@@ -56,10 +56,10 @@ public class UI_Controller extends BorderPane {
 
     // Linechart
     private LineChart lineChart;
-    private XYChart.Series interestSeries = new XYChart.Series();
-    private XYChart.Series happySeries = new XYChart.Series();
-    private XYChart.Series sadSeries = new XYChart.Series();
-    private XYChart.Series surpriseSeries = new XYChart.Series();
+    private XYChart.Series series1 = new XYChart.Series();
+    private XYChart.Series series2 = new XYChart.Series();
+    private XYChart.Series series3 = new XYChart.Series();
+    private XYChart.Series series4 = new XYChart.Series();
 
     private Slider timeSlider;
     private Label playTime;
@@ -68,7 +68,7 @@ public class UI_Controller extends BorderPane {
     private Label timeLabel;
     final Button playButton  = new Button(">");
 
-    public UI_Controller(final MediaPlayer mp) {
+    public UI_Controller(final MediaPlayer mp, int dgPhase) {
 
         this.mp = mp;
         setStyle("-fx-background-color: #9b9a9a;");
@@ -145,8 +145,10 @@ public class UI_Controller extends BorderPane {
         //setTop(mainBar);
         //setBottom(mediaBar);
 
+        int tempPhase = dgPhase;
+
         // Line Chart of data
-        Add_LineChart();
+        Add_LineChart(dgPhase);
         lineChart.setMaxHeight(320);
         lineChart.setMinHeight(320);
         lineChart.setPrefHeight(320);
@@ -155,17 +157,18 @@ public class UI_Controller extends BorderPane {
         vBox.getChildren().add(lineChart);
         setTop(vBox);
 
-        Start_Timeline();
+
+        Start_Timeline(dgPhase);
 
     }
 
-    public void Start_Timeline(){
+    public void Start_Timeline(int dgPhase){
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("mm:ss");
         Date date = new Date();
 
         try {
-            timeSegmentList = csvReader.Read();
+            timeSegmentList = csvReader.Read(dgPhase);
         } catch(IOException e){
             System.out.println("Error in CSV Reader.");
         }
@@ -184,33 +187,53 @@ public class UI_Controller extends BorderPane {
                             if(currTime.greaterThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getStartTime()).subtract(Duration.seconds(1))) &&
                                     currTime.lessThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getEndTime()).add(Duration.seconds(1)))){
 
-                                if(timeSegmentList.get(i).getEmotion().equals("Interest")){
-                                    chartData[0]++;
-                                }
+                                if(dgPhase == 1){
 
-                                if(timeSegmentList.get(i).getEmotion().equals("Indifferent")){
-                                    chartData[1]++;
-                                }
+                                    if(timeSegmentList.get(i).getEmotion().equals("Interest")){
+                                        chartData[0]++;
+                                    }
 
-                                if(timeSegmentList.get(i).getEmotion().equals("Happiness")){
-                                    chartData[2]++;
-                                }
+                                    if(timeSegmentList.get(i).getEmotion().equals("Happiness")){
+                                        chartData[1]++;
+                                    }
 
-                                if(timeSegmentList.get(i).getEmotion().equals("Sadness")){
-                                    chartData[3]++;
-                                }
+                                    if(timeSegmentList.get(i).getEmotion().equals("Sadness")){
+                                        chartData[2]++;
+                                    }
 
-                                if(timeSegmentList.get(i).getEmotion().equals("Surprise")){
-                                    chartData[4]++;
+                                    if(timeSegmentList.get(i).getEmotion().equals("Surprise")){
+                                        chartData[3]++;
+                                    }
+
+                                    if(timeSegmentList.get(i).getEmotion().equals("Indifferent")){
+                                        chartData[4]++;
+                                    }
+                                } else if(dgPhase == 2){
+
+                                    if(timeSegmentList.get(i).getEmotion().equals("+Surprise")){
+                                        chartData[0]++;
+                                    }
+
+                                    if(timeSegmentList.get(i).getEmotion().equals("-Surprise")){
+                                        chartData[1]++;
+                                    }
+
+                                    if(timeSegmentList.get(i).getEmotion().equals("Disgust")){
+                                        chartData[2]++;
+                                    }
+
+                                    if(timeSegmentList.get(i).getEmotion().equals("Amused")){
+                                        chartData[3]++;
+                                    }
                                 }
 
                             }
                         }
 
-                        interestSeries.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
-                        happySeries.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
-                        sadSeries.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
-                        surpriseSeries.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[4])));
+                        series1.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0], dgPhase)));
+                        series2.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1], dgPhase)));
+                        series3.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2], dgPhase)));
+                        series4.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3], dgPhase)));
 
                         for (int i = 0; i < chartData.length; i++)
                             chartData[i] = 0;
@@ -246,7 +269,7 @@ public class UI_Controller extends BorderPane {
         barChart.getData().add(series);
     }
 
-    private void Add_LineChart(){
+    private void Add_LineChart(int dgPhase){
 
         NumberAxis xAxis = new NumberAxis(0, 840000, 10000);
         xAxis.setLabel("Duration (ms)");
@@ -257,12 +280,20 @@ public class UI_Controller extends BorderPane {
         lineChart = new LineChart(xAxis, yAxis);
         lineChart.setCreateSymbols(false);
 
-        interestSeries.setName("Interested");
-        happySeries.setName("Happiness");
-        sadSeries.setName("Sadness");
-        surpriseSeries.setName("Surprise");
+        if(dgPhase == 1){
+            series1.setName("Interested");
+            series2.setName("Happiness");
+            series3.setName("Sadness");
+            series4.setName("Surprise");
+        } else if(dgPhase == 2){
+            series1.setName("+Surprise");
+            series2.setName("-Surprise");
+            series3.setName("Disgust");
+            series4.setName("Amused");
+        }
 
-        lineChart.getData().addAll(interestSeries, happySeries, sadSeries, surpriseSeries);
+
+        lineChart.getData().addAll(series1, series2, series3, series4);
 
     }
 
@@ -393,7 +424,12 @@ public class UI_Controller extends BorderPane {
         });
     }
 
-    private int Get_Percentage(int pNum){
+    private int Get_Percentage(int pNum, int dgPhase){
+
+        if(dgPhase == 1)
+            numParticipants = 20;
+        else if(dgPhase == 2)
+            numParticipants = 3;
 
         int percentage = (int) (pNum * 100.0f) / numParticipants;
 

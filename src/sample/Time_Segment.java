@@ -64,6 +64,18 @@ public class Time_Segment {
             case "surprise":
                 this.emotion = "Surprise";
                 break;
+            case "possurp":
+                this.emotion = "+Surprise";
+                break;
+            case "negsurp":
+                this.emotion = "-Surprise";
+                break;
+            case "disgust":
+                this.emotion = "Disgust";
+                break;
+            case "amused":
+                this.emotion = "Amused";
+                break;
 
         }
     }

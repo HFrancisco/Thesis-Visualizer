@@ -10,21 +10,16 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private static final String MEDIA_URL = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/CompiledAds.mp4";
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Thesis Visualizer V2");
         Group root = new Group();
-        Scene scene = new Scene(root, 900, 760);
+        //Scene scene = new Scene(root, 900, 760); FOR OLD WITH NO SELECTOR
+        Scene scene = new Scene(root, 300, 200);
 
-        // create media player
-        Media media = new Media(MEDIA_URL);
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setAutoPlay(true);
+        Selection_Window selWin = new Selection_Window();
 
-        UI_Controller uiController = new UI_Controller(mediaPlayer);
-        scene.setRoot(uiController);
+        scene.setRoot(selWin);
 
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
