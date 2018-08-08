@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class Selection_Window extends BorderPane {
 
-    private static final String MEDIA1_URL = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/CompiledAds1.mp4";
+    private static final String MEDIA1_URL = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media1.mp4";
     private static final String MEDIA2_URL = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/CompiledAds2.mp4";
 
     private VBox vBox;
@@ -30,7 +30,7 @@ public class Selection_Window extends BorderPane {
 
         instructionLabel = new Label("Select which to view:");
 
-        dg1Button = new Button("Data Gathering 1");
+        dg1Button = new Button("Line Chart");
         dg1Button.setPrefSize(110,30);
         dg1Button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -52,14 +52,14 @@ public class Selection_Window extends BorderPane {
             }
         });
 
-        dg2Button = new Button("Data Gathering 2");
+        dg2Button = new Button("Bar Chart");
         dg2Button.setPrefSize(110,30);
         dg2Button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
                 // create media player
-                Media media = new Media(MEDIA2_URL);
+                Media media = new Media(MEDIA1_URL);
                 MediaPlayer mediaPlayer = new MediaPlayer(media);
                 mediaPlayer.setAutoPlay(true);
 

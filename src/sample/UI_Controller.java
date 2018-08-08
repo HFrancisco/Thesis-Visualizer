@@ -15,10 +15,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.chart.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Screen;
@@ -36,8 +35,19 @@ public class UI_Controller extends BorderPane {
     private CSV_Reader csvReader = new CSV_Reader();
     private int[] chartData = new int[5];
     private List<Time_Segment> timeSegmentList = new ArrayList<>();
-    private int numParticipants;
+    private int numParticipants = 20;
 
+
+    private String vid2String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media2.mp4";
+    private String vid3String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media3.mp4";
+    private String vid4String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media4.mp4";
+    private String vid5String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media5.mp4";
+    private String vid6String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media6.mp4";
+    private String vid7String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media7.mp4";
+    private String vid8String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media8.mp4";
+    private String vid9String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media9.mp4";
+    private String vid10String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media10.mp4";
+    private String vid11String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media11.mp4";
 
     private MediaPlayer mp;
     private MediaView mediaView;
@@ -61,12 +71,20 @@ public class UI_Controller extends BorderPane {
     private XYChart.Series series3 = new XYChart.Series();
     private XYChart.Series series4 = new XYChart.Series();
 
+    private LineChart inteLineChart;
+    private LineChart hapLineChart;
+    private LineChart sadLineChart;
+    private LineChart surpLineChart;
+
     private Slider timeSlider;
     private Label playTime;
     private Label spacer;
     private Label volumeLabel;
     private Label timeLabel;
     final Button playButton  = new Button(">");
+    final Button nextButton = new Button("Next Video");
+
+    private int vidCounter = 1;
 
     public UI_Controller(final MediaPlayer mp, int dgPhase) {
 
@@ -74,45 +92,19 @@ public class UI_Controller extends BorderPane {
         setStyle("-fx-background-color: #9b9a9a;");
         mediaView = new MediaView(mp);
 
-        /*DoubleProperty mvw = mediaView.fitWidthProperty();
-        DoubleProperty mvh = mediaView.fitHeightProperty();
-        mvw.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
-        mvh.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
-        mediaView.setPreserveRatio(true);*/
-
         mediaView.setPreserveRatio(false);
         mediaView.setFitWidth(900);
         mediaView.setFitHeight(400);
 
-        //Pane mvPane = new Pane() {};
-        //mvPane.getChildren().add(mediaView);
-        //mvPane.setStyle("-fx-background-color: #9b9a9a;");
-
         mediaBar = new HBox();
-        //mediaBar.setAlignment(Pos.BOTTOM_LEFT);
-        //mediaBar.setPadding(new Insets(0, 0, 0, 0));
-        //mediaBar.setMaxWidth(950);
-        //BorderPane.setAlignment(mediaBar, Pos.BOTTOM_LEFT);
-
-        //mainBar = new HBox();
-        //mainBar.setAlignment(Pos.TOP_LEFT);
-        //mainBar.setMaxWidth(950);
-        //BorderPane.setAlignment(mainBar, Pos.TOP_LEFT);
-
-        //mainBar.getChildren().add(mvPane);
 
         vBox = new VBox();
         vBox.setAlignment(Pos.TOP_LEFT);
         vBox.getChildren().add(mediaView);
-        //vBox.getChildren().add(mainBar);
         BorderPane.setAlignment(vBox, Pos.TOP_LEFT);
 
 
         // Creating and Adding UI Elements
-
-        // Bar Chart of data
-        //Add_Chart();
-        //mainBar.getChildren().add(barChart);
 
         // Play Button
         Add_PlayButton(series);
@@ -142,20 +134,70 @@ public class UI_Controller extends BorderPane {
         Add_VolumeSlider();
         mediaBar.getChildren().add(volumeSlider);
 
-        //setTop(mainBar);
-        //setBottom(mediaBar);
+        Add_NextButton();
+        mediaBar.getChildren().add(nextButton);
 
-        int tempPhase = dgPhase;
+        if(dgPhase == 1){ // Line graphs, 1 graph per emotion, 1 graph per tab
 
-        // Line Chart of data
-        Add_LineChart(dgPhase);
-        lineChart.setMaxHeight(320);
-        lineChart.setMinHeight(320);
-        lineChart.setPrefHeight(320);
+            // Line Chart of data
+            Add_LineCharts();
+            inteLineChart.setMaxHeight(320);
+            inteLineChart.setMinHeight(320);
+            inteLineChart.setPrefHeight(320);
 
-        vBox.getChildren().add(mediaBar);
-        vBox.getChildren().add(lineChart);
-        setTop(vBox);
+            hapLineChart.setMaxHeight(320);
+            hapLineChart.setMinHeight(320);
+            hapLineChart.setPrefHeight(320);
+
+            sadLineChart.setMaxHeight(320);
+            sadLineChart.setMinHeight(320);
+            sadLineChart.setPrefHeight(320);
+
+            surpLineChart.setMaxHeight(320);
+            surpLineChart.setMinHeight(320);
+            surpLineChart.setPrefHeight(320);
+
+            // Add tabs
+            TabPane tabPane = new TabPane();
+
+            Tab inteTab = new Tab();
+            inteTab.setText("Interested");
+            inteTab.setContent(inteLineChart);
+
+            Tab hapTab = new Tab();
+            hapTab.setText("Happiness");
+            hapTab.setContent(hapLineChart);
+
+            Tab sadTab = new Tab();
+            sadTab.setText("Sadness");
+            sadTab.setContent(sadLineChart);
+
+            Tab surpTab = new Tab();
+            surpTab.setText("Surprise");
+            surpTab.setContent(surpLineChart);
+
+            tabPane.getTabs().add(inteTab);
+            tabPane.getTabs().add(hapTab);
+            tabPane.getTabs().add(sadTab);
+            tabPane.getTabs().add(surpTab);
+
+            // Add elements to largest container
+            vBox.getChildren().add(mediaBar);
+            vBox.getChildren().add(tabPane);
+            setTop(vBox);
+        } else { // bar chart, combined all emotions in 1 chart
+
+            Add_Chart();
+            barChart.setMaxHeight(320);
+            barChart.setMinHeight(320);
+            barChart.setPrefHeight(320);
+            barChart.setHorizontalGridLinesVisible(true);
+
+            vBox.getChildren().add(mediaBar);
+            vBox.getChildren().add(barChart);
+            setTop(vBox);
+
+        }
 
         Start_Timeline(dgPhase);
 
@@ -163,14 +205,22 @@ public class UI_Controller extends BorderPane {
 
     public void Start_Timeline(int dgPhase){
 
+        double sec;
+
         try {
-            timeSegmentList = csvReader.Read(dgPhase);
+            timeSegmentList = csvReader.Read(1);
         } catch(IOException e){
             System.out.println("Error in CSV Reader.");
         }
 
+        if(dgPhase == 1)
+            sec = 0.5;
+        else
+            sec = 3;
+
+
         Timeline tl = new Timeline();
-        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5),
+        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(sec),
                 new EventHandler<ActionEvent>() {
                     @Override public void handle(ActionEvent actionEvent) {
 
@@ -182,53 +232,44 @@ public class UI_Controller extends BorderPane {
                             if(currTime.greaterThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getStartTime()).subtract(Duration.seconds(1))) &&
                                     currTime.lessThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getEndTime()).add(Duration.seconds(1)))){
 
-                                if(dgPhase == 1){
-
-                                    if(timeSegmentList.get(i).getEmotion().equals("Interest")){
-                                        chartData[0]++;
-                                    }
-
-                                    if(timeSegmentList.get(i).getEmotion().equals("Happiness")){
-                                        chartData[1]++;
-                                    }
-
-                                    if(timeSegmentList.get(i).getEmotion().equals("Sadness")){
-                                        chartData[2]++;
-                                    }
-
-                                    if(timeSegmentList.get(i).getEmotion().equals("Surprise")){
-                                        chartData[3]++;
-                                    }
-
-                                    if(timeSegmentList.get(i).getEmotion().equals("Indifferent")){
-                                        chartData[4]++;
-                                    }
-                                } else if(dgPhase == 2){
-
-                                    if(timeSegmentList.get(i).getEmotion().equals("+Surprise")){
-                                        chartData[0]++;
-                                    }
-
-                                    if(timeSegmentList.get(i).getEmotion().equals("-Surprise")){
-                                        chartData[1]++;
-                                    }
-
-                                    if(timeSegmentList.get(i).getEmotion().equals("Disgust")){
-                                        chartData[2]++;
-                                    }
-
-                                    if(timeSegmentList.get(i).getEmotion().equals("Amused")){
-                                        chartData[3]++;
-                                    }
+                                if(timeSegmentList.get(i).getEmotion().equals("Interest")){
+                                    chartData[0]++;
                                 }
 
+                                if(timeSegmentList.get(i).getEmotion().equals("Happiness")){
+                                    chartData[1]++;
+                                }
+
+                                if(timeSegmentList.get(i).getEmotion().equals("Sadness")){
+                                    chartData[2]++;
+                                }
+
+                                if(timeSegmentList.get(i).getEmotion().equals("Surprise")){
+                                    chartData[3]++;
+                                }
+
+                                if(timeSegmentList.get(i).getEmotion().equals("Indifferent")){
+                                    chartData[4]++;
+                                }
                             }
                         }
 
-                        series1.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0], dgPhase)));
-                        series2.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1], dgPhase)));
-                        series3.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2], dgPhase)));
-                        series4.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3], dgPhase)));
+                        if(dgPhase == 1){ // Line
+
+                            series1.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
+                            series2.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1])));
+                            series3.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
+                            series4.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
+
+                        } else { // Bar
+
+                            series1.getData().add(new XYChart.Data<>("Interested", Get_Percentage(chartData[0])));
+                            series2.getData().add(new XYChart.Data<>("Happiness", Get_Percentage(chartData[1])));
+                            series3.getData().add(new XYChart.Data<>("Sadness", Get_Percentage(chartData[2])));
+                            series4.getData().add(new XYChart.Data<>("Surprise", Get_Percentage(chartData[3])));
+
+                        }
+
 
                         for (int i = 0; i < chartData.length; i++)
                             chartData[i] = 0;
@@ -247,49 +288,64 @@ public class UI_Controller extends BorderPane {
         xAxis.setLabel("Emotions");
 
         NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Frequency");
+        yAxis.setLabel("Percentage");
+        yAxis.setAutoRanging(false);
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(100);
 
         barChart = new BarChart(xAxis, yAxis);
 
-        series = new XYChart.Series();
-        series.setName("Video 1");
+        series1.setName("Interested");
+        series2.setName("Happiness");
+        series3.setName("Sadness");
+        series4.setName("Surprise");
 
-        // Initial Values
-        series.getData().add(new XYChart.Data("Interest", 1));
-        series.getData().add(new XYChart.Data("Indifferent"  , 2));
-        series.getData().add(new XYChart.Data("Happiness"  , 0));
-        series.getData().add(new XYChart.Data("Sadness"  , 0));
-        series.getData().add(new XYChart.Data("Surprise"  , 0));
-
-        barChart.getData().add(series);
+        barChart.getData().addAll(series1, series2, series3, series4);
     }
 
-    private void Add_LineChart(int dgPhase){
+    private void Add_LineCharts(){
 
         NumberAxis xAxis = new NumberAxis(0, 840000, 10000);
         xAxis.setLabel("Duration (ms)");
-
         NumberAxis yAxis = new NumberAxis(0, 100, 10);
         yAxis.setLabel("Percentage");
 
-        lineChart = new LineChart(xAxis, yAxis);
-        lineChart.setCreateSymbols(false);
+        NumberAxis xAxis2 = new NumberAxis(0, 840000, 10000);
+        xAxis2.setLabel("Duration (ms)");
+        NumberAxis yAxis2 = new NumberAxis(0, 100, 10);
+        yAxis2.setLabel("Percentage");
 
-        if(dgPhase == 1){
-            series1.setName("Interested");
-            series2.setName("Happiness");
-            series3.setName("Sadness");
-            series4.setName("Surprise");
-        } else if(dgPhase == 2){
-            series1.setName("+Surprise");
-            series2.setName("-Surprise");
-            series3.setName("Disgust");
-            series4.setName("Amused");
-        }
+        NumberAxis xAxis3 = new NumberAxis(0, 840000, 10000);
+        xAxis3.setLabel("Duration (ms)");
+        NumberAxis yAxis3 = new NumberAxis(0, 100, 10);
+        yAxis3.setLabel("Percentage");
 
+        NumberAxis xAxis4 = new NumberAxis(0, 840000, 10000);
+        xAxis4.setLabel("Duration (ms)");
+        NumberAxis yAxis4 = new NumberAxis(0, 100, 10);
+        yAxis4.setLabel("Percentage");
 
-        lineChart.getData().addAll(series1, series2, series3, series4);
+        inteLineChart = new LineChart(xAxis, yAxis);
+        inteLineChart.setCreateSymbols(false);
 
+        hapLineChart = new LineChart(xAxis2, yAxis2);
+        hapLineChart.setCreateSymbols(false);
+
+        sadLineChart = new LineChart(xAxis3, yAxis3);
+        sadLineChart.setCreateSymbols(false);
+
+        surpLineChart = new LineChart(xAxis4, yAxis4);
+        surpLineChart.setCreateSymbols(false);
+
+        series1.setName("Interested");
+        series2.setName("Happiness");
+        series3.setName("Sadness");
+        series4.setName("Surprise");
+
+        inteLineChart.getData().addAll(series1);
+        hapLineChart.getData().addAll(series2);
+        sadLineChart.getData().addAll(series3);
+        surpLineChart.getData().addAll(series4);
     }
 
     private void Add_PlayButton(XYChart.Series pSeries){
@@ -366,6 +422,57 @@ public class UI_Controller extends BorderPane {
         });
     }
 
+    private void Add_NextButton(){
+
+        nextButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+
+
+                if(vidCounter == 1){
+
+                    Create_NewMediaPlayer(vid2String);
+
+                } else if(vidCounter == 2){
+
+                    Create_NewMediaPlayer(vid3String);
+
+                } else if(vidCounter == 3){
+
+                    Create_NewMediaPlayer(vid4String);
+
+                } else if(vidCounter == 4){
+
+                    Create_NewMediaPlayer(vid5String);
+
+                } else if(vidCounter == 5){
+
+                    Create_NewMediaPlayer(vid6String);
+
+                } else if(vidCounter == 6){
+
+                    Create_NewMediaPlayer(vid7String);
+
+                } else if(vidCounter == 7){
+
+                    Create_NewMediaPlayer(vid8String);
+
+                } else if(vidCounter == 8){
+
+                    Create_NewMediaPlayer(vid9String);
+
+                } else if(vidCounter == 9){
+
+                    Create_NewMediaPlayer(vid10String);
+
+                } else if(vidCounter == 10){
+
+                    Create_NewMediaPlayer(vid11String);
+                }
+            }
+        });
+
+    }
+
     private void Add_TimeLabel(){
 
         // Add Time Label
@@ -419,16 +526,22 @@ public class UI_Controller extends BorderPane {
         });
     }
 
-    private int Get_Percentage(int pNum, int dgPhase){
-
-        if(dgPhase == 1)
-            numParticipants = 20;
-        else if(dgPhase == 2)
-            numParticipants = 3;
+    private int Get_Percentage(int pNum){
 
         int percentage = (int) (pNum * 100.0f) / numParticipants;
 
         return percentage;
+    }
+
+    private void Create_NewMediaPlayer(String pVidString){
+
+        mediaView.getMediaPlayer().setMute(true);
+        Media media = new Media(pVidString);
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setAutoPlay(true);
+        mediaView.setMediaPlayer(mediaPlayer);
+        vidCounter++;
+
     }
 
 }
