@@ -9,7 +9,7 @@ import javafx.util.Duration;
 
 public class Controller{
 
-    protected void Controller_Process(Duration pDuration, XYChart.Series pSeries, Label pPlayTime,
+    protected void Controller_Process(Duration pDuration, Label pPlayTime,
                                       Slider pTimeSlider, Slider pVolumeSlider, MediaPlayer pMP) {
 
         if (pPlayTime != null && pTimeSlider != null && pVolumeSlider != null) {

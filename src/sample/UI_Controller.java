@@ -26,6 +26,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -86,6 +87,20 @@ public class UI_Controller extends BorderPane {
 
     private int vidCounter = 1;
 
+    private int dur1 = 110000;
+    private int dur2 = 29000;
+    private int dur3 = 120000;
+    private int dur4 = 90000;
+    private int dur5 = 67000;
+    private int dur6 = 120000;
+    private int dur7 = 56000;
+    private int dur8 = 60000;
+    private int dur9 = 60000;
+    private int dur10 = 60000;
+    private int dur11 = 63000;
+
+    private Timeline tl = new Timeline();
+
     public UI_Controller(final MediaPlayer mp, int dgPhase) {
 
         this.mp = mp;
@@ -103,11 +118,12 @@ public class UI_Controller extends BorderPane {
         vBox.getChildren().add(mediaView);
         BorderPane.setAlignment(vBox, Pos.TOP_LEFT);
 
+        MediaPlayer_Stuff();
 
         // Creating and Adding UI Elements
 
         // Play Button
-        Add_PlayButton(series);
+        Add_PlayButton();
         mediaBar.getChildren().add(playButton);
 
         // Spacer
@@ -137,54 +153,13 @@ public class UI_Controller extends BorderPane {
         Add_NextButton();
         mediaBar.getChildren().add(nextButton);
 
+        vBox.getChildren().add(mediaBar);
+
         if(dgPhase == 1){ // Line graphs, 1 graph per emotion, 1 graph per tab
 
             // Line Chart of data
-            Add_LineCharts();
-            inteLineChart.setMaxHeight(320);
-            inteLineChart.setMinHeight(320);
-            inteLineChart.setPrefHeight(320);
-
-            hapLineChart.setMaxHeight(320);
-            hapLineChart.setMinHeight(320);
-            hapLineChart.setPrefHeight(320);
-
-            sadLineChart.setMaxHeight(320);
-            sadLineChart.setMinHeight(320);
-            sadLineChart.setPrefHeight(320);
-
-            surpLineChart.setMaxHeight(320);
-            surpLineChart.setMinHeight(320);
-            surpLineChart.setPrefHeight(320);
-
-            // Add tabs
-            TabPane tabPane = new TabPane();
-
-            Tab inteTab = new Tab();
-            inteTab.setText("Interested");
-            inteTab.setContent(inteLineChart);
-
-            Tab hapTab = new Tab();
-            hapTab.setText("Happiness");
-            hapTab.setContent(hapLineChart);
-
-            Tab sadTab = new Tab();
-            sadTab.setText("Sadness");
-            sadTab.setContent(sadLineChart);
-
-            Tab surpTab = new Tab();
-            surpTab.setText("Surprise");
-            surpTab.setContent(surpLineChart);
-
-            tabPane.getTabs().add(inteTab);
-            tabPane.getTabs().add(hapTab);
-            tabPane.getTabs().add(sadTab);
-            tabPane.getTabs().add(surpTab);
-
-            // Add elements to largest container
-            vBox.getChildren().add(mediaBar);
-            vBox.getChildren().add(tabPane);
-            setTop(vBox);
+            Add_LineCharts(dur1);
+            Add_ChartVisual();
         } else { // bar chart, combined all emotions in 1 chart
 
             Add_Chart();
@@ -199,6 +174,8 @@ public class UI_Controller extends BorderPane {
 
         }
 
+        ReadCSV(vidCounter);
+
         Start_Timeline(dgPhase);
 
     }
@@ -207,19 +184,12 @@ public class UI_Controller extends BorderPane {
 
         double sec;
 
-        try {
-            timeSegmentList = csvReader.Read(1);
-        } catch(IOException e){
-            System.out.println("Error in CSV Reader.");
-        }
-
         if(dgPhase == 1)
             sec = 0.5;
         else
             sec = 3;
 
 
-        Timeline tl = new Timeline();
         tl.getKeyFrames().add(new KeyFrame(Duration.seconds(sec),
                 new EventHandler<ActionEvent>() {
                     @Override public void handle(ActionEvent actionEvent) {
@@ -270,7 +240,6 @@ public class UI_Controller extends BorderPane {
 
                         }
 
-
                         for (int i = 0; i < chartData.length; i++)
                             chartData[i] = 0;
 
@@ -303,24 +272,24 @@ public class UI_Controller extends BorderPane {
         barChart.getData().addAll(series1, series2, series3, series4);
     }
 
-    private void Add_LineCharts(){
+    private void Add_LineCharts(int upBound){
 
-        NumberAxis xAxis = new NumberAxis(0, 840000, 10000);
+        NumberAxis xAxis = new NumberAxis(0, upBound, 10000);
         xAxis.setLabel("Duration (ms)");
         NumberAxis yAxis = new NumberAxis(0, 100, 10);
         yAxis.setLabel("Percentage");
 
-        NumberAxis xAxis2 = new NumberAxis(0, 840000, 10000);
+        NumberAxis xAxis2 = new NumberAxis(0, upBound, 10000);
         xAxis2.setLabel("Duration (ms)");
         NumberAxis yAxis2 = new NumberAxis(0, 100, 10);
         yAxis2.setLabel("Percentage");
 
-        NumberAxis xAxis3 = new NumberAxis(0, 840000, 10000);
+        NumberAxis xAxis3 = new NumberAxis(0, upBound, 10000);
         xAxis3.setLabel("Duration (ms)");
         NumberAxis yAxis3 = new NumberAxis(0, 100, 10);
         yAxis3.setLabel("Percentage");
 
-        NumberAxis xAxis4 = new NumberAxis(0, 840000, 10000);
+        NumberAxis xAxis4 = new NumberAxis(0, upBound, 10000);
         xAxis4.setLabel("Duration (ms)");
         NumberAxis yAxis4 = new NumberAxis(0, 100, 10);
         yAxis4.setLabel("Percentage");
@@ -348,7 +317,7 @@ public class UI_Controller extends BorderPane {
         surpLineChart.getData().addAll(series4);
     }
 
-    private void Add_PlayButton(XYChart.Series pSeries){
+    private void Add_PlayButton(){
 
         // Add listeners to Play Button
         playButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -377,49 +346,6 @@ public class UI_Controller extends BorderPane {
             }
         });
 
-        mp.currentTimeProperty().addListener(new InvalidationListener()
-        {
-            public void invalidated(Observable ov) {
-                controller.Controller_Process(duration, pSeries, playTime,
-                        timeSlider, volumeSlider, mp);
-            }
-        });
-
-        mp.setOnPlaying(new Runnable() {
-            public void run() {
-                if (stopRequested) {
-                    mp.pause();
-                    stopRequested = false;
-                } else {
-                    playButton.setText("||");
-                }
-            }
-        });
-
-        mp.setOnPaused(new Runnable() {
-            public void run() {
-                playButton.setText(">");
-            }
-        });
-
-        mp.setOnReady(new Runnable() {
-            public void run() {
-                duration = mp.getMedia().getDuration();
-                controller.Controller_Process(duration, pSeries, playTime,
-                        timeSlider, volumeSlider, mp);
-            }
-        });
-
-        mp.setCycleCount(repeat ? MediaPlayer.INDEFINITE : 1);
-        mp.setOnEndOfMedia(new Runnable() {
-            public void run() {
-                if (!repeat) {
-                    playButton.setText(">");
-                    stopRequested = true;
-                    atEndOfMedia = true;
-                }
-            }
-        });
     }
 
     private void Add_NextButton(){
@@ -427,47 +353,89 @@ public class UI_Controller extends BorderPane {
         nextButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
 
-
                 if(vidCounter == 1){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid2String);
+                    Add_LineCharts(dur2);
+                    Add_ChartVisual();
 
                 } else if(vidCounter == 2){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid3String);
+                    Add_LineCharts(dur3);
+                    Add_ChartVisual();
 
                 } else if(vidCounter == 3){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid4String);
+                    Add_LineCharts(dur4);
+                    Add_ChartVisual();
 
                 } else if(vidCounter == 4){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid5String);
+                    Add_LineCharts(dur5);
+                    Add_ChartVisual();
 
                 } else if(vidCounter == 5){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid6String);
+                    Add_LineCharts(dur6);
+                    Add_ChartVisual();
 
                 } else if(vidCounter == 6){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid7String);
+                    Add_LineCharts(dur7);
+                    Add_ChartVisual();
 
                 } else if(vidCounter == 7){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid8String);
+                    Add_LineCharts(dur8);
+                    Add_ChartVisual();
 
                 } else if(vidCounter == 8){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid9String);
+                    Add_LineCharts(dur9);
+                    Add_ChartVisual();
 
                 } else if(vidCounter == 9){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid10String);
+                    Add_LineCharts(dur10);
+                    Add_ChartVisual();
 
                 } else if(vidCounter == 10){
 
+                    tl.stop();
+                    Remove_Charts();
                     Create_NewMediaPlayer(vid11String);
+                    Add_LineCharts(dur11);
+                    Add_ChartVisual();
+
                 }
+
+                Start_Timeline(1);
             }
         });
 
@@ -537,10 +505,137 @@ public class UI_Controller extends BorderPane {
 
         mediaView.getMediaPlayer().setMute(true);
         Media media = new Media(pVidString);
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setAutoPlay(true);
-        mediaView.setMediaPlayer(mediaPlayer);
+        mp = new MediaPlayer(media);
+        mp.setAutoPlay(true);
+        mediaView.setMediaPlayer(mp);
+
+        inteLineChart.getData().removeAll(inteLineChart.getData());
+        hapLineChart.getData().removeAll(hapLineChart.getData());
+        sadLineChart.getData().removeAll(sadLineChart.getData());
+        surpLineChart.getData().removeAll(surpLineChart.getData());
+
+        series1 = new XYChart.Series();
+        series2 = new XYChart.Series();
+        series3 = new XYChart.Series();
+        series4 = new XYChart.Series();
+
+        MediaPlayer_Stuff();
+
         vidCounter++;
+
+        ReadCSV(vidCounter);
+
+    }
+
+    private void MediaPlayer_Stuff(){
+
+        mp.currentTimeProperty().addListener(new InvalidationListener()
+        {
+            public void invalidated(Observable ov) {
+                controller.Controller_Process(duration, playTime,
+                        timeSlider, volumeSlider, mp);
+            }
+        });
+
+        mp.setOnPlaying(new Runnable() {
+            public void run() {
+                if (stopRequested) {
+                    mp.pause();
+                    stopRequested = false;
+                } else {
+                    playButton.setText("||");
+                }
+            }
+        });
+
+        mp.setOnPaused(new Runnable() {
+            public void run() {
+                playButton.setText(">");
+            }
+        });
+
+        mp.setOnReady(new Runnable() {
+            public void run() {
+                duration = mp.getMedia().getDuration();
+                controller.Controller_Process(duration, playTime,
+                        timeSlider, volumeSlider, mp);
+            }
+        });
+
+        mp.setCycleCount(repeat ? MediaPlayer.INDEFINITE : 1);
+        mp.setOnEndOfMedia(new Runnable() {
+            public void run() {
+                if (!repeat) {
+                    playButton.setText(">");
+                    stopRequested = true;
+                    atEndOfMedia = true;
+                }
+            }
+        });
+
+    }
+
+    private void ReadCSV(int pVidCounter){
+
+        try {
+            timeSegmentList = csvReader.Read(pVidCounter);
+        } catch(IOException e){
+            System.out.println("Error in CSV Reader.");
+        }
+
+    }
+
+    private void Remove_Charts(){
+
+        vBox.getChildren().remove(vBox.getChildren().size()-1);
+
+    }
+
+    private void Add_ChartVisual(){
+
+        inteLineChart.setMaxHeight(320);
+        inteLineChart.setMinHeight(320);
+        inteLineChart.setPrefHeight(320);
+
+        hapLineChart.setMaxHeight(320);
+        hapLineChart.setMinHeight(320);
+        hapLineChart.setPrefHeight(320);
+
+        sadLineChart.setMaxHeight(320);
+        sadLineChart.setMinHeight(320);
+        sadLineChart.setPrefHeight(320);
+
+        surpLineChart.setMaxHeight(320);
+        surpLineChart.setMinHeight(320);
+        surpLineChart.setPrefHeight(320);
+
+        // Add tabs
+        TabPane tabPane = new TabPane();
+
+        Tab inteTab = new Tab();
+        inteTab.setText("Interested");
+        inteTab.setContent(inteLineChart);
+
+        Tab hapTab = new Tab();
+        hapTab.setText("Happiness");
+        hapTab.setContent(hapLineChart);
+
+        Tab sadTab = new Tab();
+        sadTab.setText("Sadness");
+        sadTab.setContent(sadLineChart);
+
+        Tab surpTab = new Tab();
+        surpTab.setText("Surprise");
+        surpTab.setContent(surpLineChart);
+
+        tabPane.getTabs().add(inteTab);
+        tabPane.getTabs().add(hapTab);
+        tabPane.getTabs().add(sadTab);
+        tabPane.getTabs().add(surpTab);
+
+        // Add elements to largest container
+        vBox.getChildren().add(tabPane);
+        setTop(vBox);
 
     }
 

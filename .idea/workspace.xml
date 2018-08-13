@@ -61,34 +61,22 @@
       <file leaf-file-name="UI_Controller.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/UI_Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="698">
-              <caret line="497" column="0" lean-forward="true" selection-start-line="497" selection-start-column="0" selection-end-line="497" selection-end-column="0" />
+            <state relative-caret-position="314">
+              <caret line="464" column="5" lean-forward="true" selection-start-line="464" selection-start-column="5" selection-end-line="464" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#Start_Timeline#0;class#UI_Controller#0" expanded="false" />
-                <element signature="method#Add_Chart#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_LineCharts#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_PlayButton#0;class#UI_Controller#0" expanded="false" />
-                <element signature="method#Add_NextButton#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_TimeLabel#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_TimeSlider#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_PlayLabel#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_VolumeLabel#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_VolumeSlider#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Get_Percentage#0;class#UI_Controller#0" expanded="false" />
-                <element signature="method#Create_NewMediaPlayer#0;class#UI_Controller#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Selection_Window.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Selection_Window.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="612">
-              <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="method#MediaPlayer_Stuff#0;class#UI_Controller#0" expanded="false" />
+                <element signature="method#ReadCSV#0;class#UI_Controller#0" expanded="false" />
+                <element signature="method#Remove_Charts#0;class#UI_Controller#0" expanded="false" />
+                <element signature="method#Add_ChartVisual#0;class#UI_Controller#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -105,8 +93,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>bac</find>
-      <find>time</find>
       <find>update</find>
       <find>mediabar</find>
       <find>setb</find>
@@ -120,7 +106,6 @@
       <find>mainBar.get</find>
       <find>format</find>
       <find>vbox</find>
-      <find>read</find>
       <find>get_per</find>
       <find>main</find>
       <find>hbox</find>
@@ -130,6 +115,14 @@
       <find>controller</find>
       <find>format_time</find>
       <find>dg</find>
+      <find>controllerpro</find>
+      <find>eries</find>
+      <find>duration</find>
+      <find>timelabel</find>
+      <find>read</find>
+      <find>readcsv</find>
+      <find>vbox.get</find>
+      <find>series1</find>
     </findStrings>
   </component>
   <component name="FindManager">
@@ -151,11 +144,11 @@
         <option value="$USER_HOME$/Downloads/Controller.class" />
         <option value="$PROJECT_DIR$/src/resources/SegmentsOnlyV2.csv" />
         <option value="$PROJECT_DIR$/src/sample/Main.java" />
-        <option value="$PROJECT_DIR$/src/sample/Time_Segment.java" />
         <option value="$PROJECT_DIR$/src/resources/SegmentsOnlyV2Phase2.csv" />
-        <option value="$PROJECT_DIR$/src/sample/CSV_Reader.java" />
-        <option value="$PROJECT_DIR$/src/sample/Controller.java" />
         <option value="$PROJECT_DIR$/src/sample/Selection_Window.java" />
+        <option value="$PROJECT_DIR$/src/sample/Controller.java" />
+        <option value="$PROJECT_DIR$/src/sample/CSV_Reader.java" />
+        <option value="$PROJECT_DIR$/src/sample/Time_Segment.java" />
         <option value="$PROJECT_DIR$/src/sample/UI_Controller.java" />
       </list>
     </option>
@@ -191,6 +184,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -224,10 +221,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -417,12 +410,18 @@
       <workItem from="1533556047924" duration="666000" />
       <workItem from="1533644559837" duration="10208000" />
       <workItem from="1533724821799" duration="605000" />
-      <workItem from="1533739803184" duration="4639000" />
+      <workItem from="1533739803184" duration="4683000" />
+      <workItem from="1533996353006" duration="685000" />
+      <workItem from="1534048730073" duration="3966000" />
+      <workItem from="1534070805946" duration="7148000" />
+      <workItem from="1534152575936" duration="599000" />
+      <workItem from="1534156916853" duration="5000" />
+      <workItem from="1534161505405" duration="12989000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="141988000" />
+    <option name="totallyTimeSpent" value="167424000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -438,7 +437,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.06910569" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24085365" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24085365" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -514,15 +513,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/sample/UI_Controller.java</url>
-          <line>500</line>
-          <properties />
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="38" />
+      <option name="time" value="46" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -555,9 +546,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="21" column="41" lean-forward="false" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -586,9 +574,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="41" lean-forward="false" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -617,9 +602,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="21" column="41" lean-forward="false" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -648,9 +630,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="18" column="47" lean-forward="false" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -679,9 +658,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="18" column="47" lean-forward="false" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -710,9 +686,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
           <caret line="18" column="47" lean-forward="false" selection-start-line="18" selection-start-column="47" selection-end-line="18" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -741,9 +714,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -772,9 +742,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="459">
           <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -803,9 +770,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -834,9 +798,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -865,7 +826,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="237" column="12" lean-forward="false" selection-start-line="237" selection-start-column="12" selection-end-line="237" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -978,6 +938,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="493">
           <caret line="31" column="1" lean-forward="true" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Selection_Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="431">
+          <caret line="65" column="29" lean-forward="false" selection-start-line="65" selection-start-column="29" selection-end-line="65" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="18" column="20" lean-forward="false" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -986,40 +963,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Time_Segment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="24" lean-forward="true" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="24" />
-          <folding>
-            <element signature="method#setStartTime#0;class#Time_Segment#0" expanded="false" />
-            <element signature="method#setEndTime#0;class#Time_Segment#0" expanded="false" />
-            <element signature="method#setEmotion#0;class#Time_Segment#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="37" column="24" lean-forward="false" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="-253">
+          <caret line="33" column="61" lean-forward="true" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="61" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/CSV_Reader.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="23" column="30" lean-forward="false" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Selection_Window.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        <state relative-caret-position="-322">
+          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1028,22 +981,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/UI_Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="698">
-          <caret line="497" column="0" lean-forward="true" selection-start-line="497" selection-start-column="0" selection-end-line="497" selection-end-column="0" />
+        <state relative-caret-position="314">
+          <caret line="464" column="5" lean-forward="true" selection-start-line="464" selection-start-column="5" selection-end-line="464" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#Start_Timeline#0;class#UI_Controller#0" expanded="false" />
-            <element signature="method#Add_Chart#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_LineCharts#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_PlayButton#0;class#UI_Controller#0" expanded="false" />
-            <element signature="method#Add_NextButton#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_TimeLabel#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_TimeSlider#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_PlayLabel#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_VolumeLabel#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_VolumeSlider#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Get_Percentage#0;class#UI_Controller#0" expanded="false" />
-            <element signature="method#Create_NewMediaPlayer#0;class#UI_Controller#0" expanded="false" />
+            <element signature="method#MediaPlayer_Stuff#0;class#UI_Controller#0" expanded="false" />
+            <element signature="method#ReadCSV#0;class#UI_Controller#0" expanded="false" />
+            <element signature="method#Remove_Charts#0;class#UI_Controller#0" expanded="false" />
+            <element signature="method#Add_ChartVisual#0;class#UI_Controller#0" expanded="false" />
           </folding>
         </state>
       </provider>

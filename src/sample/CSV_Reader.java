@@ -14,17 +14,55 @@ public class CSV_Reader {
 
     BufferedReader reader;
 
-    public List Read(int dgPhase) throws  IOException{
+    private String csv1 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid1.csv";
+    private String csv2 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid2.csv";
+    private String csv3 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid3.csv";
+    private String csv4 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid4.csv";
+    private String csv5 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid5.csv";
+    private String csv6 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid6.csv";
+    private String csv7 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid7.csv";
+    private String csv8 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid8.csv";
+    private String csv9 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid9.csv";
+    private String csv10 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid10.csv";
+    private String csv11 = "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/vid11.csv";
 
-        if(dgPhase == 1){
+    public List Read(int vidNum) throws  IOException{
 
-            // open file input stream
-            reader = new BufferedReader(new FileReader("" +
-                    "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/SegmentsOnlyV2.csv"));
-        } else if(dgPhase == 2){
-            // open file input stream
-            reader = new BufferedReader(new FileReader("" +
-                    "C:/Users/Harry/Documents/_PROGRAMMING/_SourceTree/Thesis Visualizer/src/resources/SegmentsOnlyV2Phase2.csv"));
+        switch (vidNum){
+
+            case 1:
+                reader = new BufferedReader(new FileReader(csv1));
+                break;
+            case 2:
+                reader = new BufferedReader(new FileReader(csv2));
+                break;
+            case 3:
+                reader = new BufferedReader(new FileReader(csv3));
+                break;
+            case 4:
+                reader = new BufferedReader(new FileReader(csv4));
+                break;
+            case 5:
+                reader = new BufferedReader(new FileReader(csv5));
+                break;
+            case 6:
+                reader = new BufferedReader(new FileReader(csv6));
+                break;
+            case 7:
+                reader = new BufferedReader(new FileReader(csv7));
+                break;
+            case 8:
+                reader = new BufferedReader(new FileReader(csv8));
+                break;
+            case 9:
+                reader = new BufferedReader(new FileReader(csv9));
+                break;
+            case 10:
+                reader = new BufferedReader(new FileReader(csv10));
+                break;
+            case 11:
+                reader = new BufferedReader(new FileReader(csv11));
+                break;
         }
 
         // read file line by line

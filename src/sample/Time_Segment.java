@@ -76,6 +76,8 @@ public class Time_Segment {
             case "amused":
                 this.emotion = "Amused";
                 break;
+            default:
+                this.emotion = "Others";
 
         }
     }
