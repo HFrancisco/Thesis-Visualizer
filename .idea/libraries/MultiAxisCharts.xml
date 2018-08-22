@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="MultiAxisCharts">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/resources/MultiAxisCharts.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

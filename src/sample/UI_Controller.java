@@ -1,5 +1,7 @@
 package sample;
 
+import com.kostikiadis.charts.MultiAxisChart;
+import com.kostikiadis.charts.MultiAxisLineChart;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.InvalidationListener;
@@ -16,6 +18,8 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -35,9 +39,11 @@ public class UI_Controller extends BorderPane {
     private Controller controller = new Controller();
     private CSV_Reader csvReader = new CSV_Reader();
     private int[] chartData = new int[5];
+    private int[] chartDataSkip = new int[5];
     private List<Time_Segment> timeSegmentList = new ArrayList<>();
     private int numParticipants = 20;
 
+    private boolean skip = false;
 
     private String vid2String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media2.mp4";
     private String vid3String = "file:/C:/Users/Harry/Documents/_ACADS/_THESIS/Videos/media3.mp4";
@@ -61,21 +67,34 @@ public class UI_Controller extends BorderPane {
     private HBox mainBar;
     private VBox vBox;
 
+    private Duration dragStartTime;
+    private Duration dragEndTime;
+
     // Barchart
     private BarChart barChart;
-    private XYChart.Series series;
 
     // Linechart
-    private LineChart lineChart;
-    private XYChart.Series series1 = new XYChart.Series();
-    private XYChart.Series series2 = new XYChart.Series();
-    private XYChart.Series series3 = new XYChart.Series();
-    private XYChart.Series series4 = new XYChart.Series();
+    private MultiAxisChart.Series<Number, Number> series1 = new MultiAxisChart.Series<Number, Number>();
+    private MultiAxisChart.Series<Number, Number> series2 = new MultiAxisChart.Series<Number, Number>();
+    private MultiAxisChart.Series<Number, Number> series3 = new MultiAxisChart.Series<Number, Number>();
+    private MultiAxisChart.Series<Number, Number> series4 = new MultiAxisChart.Series<Number, Number>();
 
-    private LineChart inteLineChart;
-    private LineChart hapLineChart;
-    private LineChart sadLineChart;
-    private LineChart surpLineChart;
+    private MultiAxisChart.Series<Number, Number> allSeries1 = new MultiAxisChart.Series<Number, Number>();
+    private MultiAxisChart.Series<Number, Number> allSeries2 = new MultiAxisChart.Series<Number, Number>();
+    private MultiAxisChart.Series<Number, Number> allSeries3 = new MultiAxisChart.Series<Number, Number>();
+    private MultiAxisChart.Series<Number, Number> allSeries4 = new MultiAxisChart.Series<Number, Number>();
+
+    private MultiAxisLineChart multiInteLineChart;
+    private MultiAxisLineChart multiHapLineChart;
+    private MultiAxisLineChart multiSadLineChart;
+    private MultiAxisLineChart multiSurpLineChart;
+    private MultiAxisLineChart multiAllLineChart;
+
+    //private LineChart inteLineChart;
+    //private LineChart hapLineChart;
+    //private LineChart sadLineChart;
+    //private LineChart surpLineChart;
+    //private LineChart allLineChart;
 
     private Slider timeSlider;
     private Label playTime;
@@ -182,17 +201,14 @@ public class UI_Controller extends BorderPane {
 
     public void Start_Timeline(int dgPhase){
 
-        double sec;
-
-        if(dgPhase == 1)
-            sec = 0.5;
-        else
-            sec = 3;
-
-
-        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(sec),
+        tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5),
                 new EventHandler<ActionEvent>() {
                     @Override public void handle(ActionEvent actionEvent) {
+
+                        if(skip){
+                            Get_SkippedData();
+                            skip = false;
+                        }
 
                         Duration currTime = mp.getCurrentTime();
                         String[] splitParts = currTime.toString().split("\\.");
@@ -226,17 +242,24 @@ public class UI_Controller extends BorderPane {
 
                         if(dgPhase == 1){ // Line
 
-                            series1.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
-                            series2.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1])));
-                            series3.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
-                            series4.getData().add(new XYChart.Data(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
+
+
+                            series1.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
+                            series2.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1])));
+                            series3.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
+                            series4.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
+
+                            allSeries1.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
+                            allSeries2.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1])));
+                            allSeries3.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
+                            allSeries4.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
 
                         } else { // Bar
 
-                            series1.getData().add(new XYChart.Data<>("Interested", Get_Percentage(chartData[0])));
+                            /*series1.getData().add(new XYChart.Data<>("Interested", Get_Percentage(chartData[0])));
                             series2.getData().add(new XYChart.Data<>("Happiness", Get_Percentage(chartData[1])));
                             series3.getData().add(new XYChart.Data<>("Sadness", Get_Percentage(chartData[2])));
-                            series4.getData().add(new XYChart.Data<>("Surprise", Get_Percentage(chartData[3])));
+                            series4.getData().add(new XYChart.Data<>("Surprise", Get_Percentage(chartData[3])));*/
 
                         }
 
@@ -278,23 +301,38 @@ public class UI_Controller extends BorderPane {
         xAxis.setLabel("Duration (ms)");
         NumberAxis yAxis = new NumberAxis(0, 100, 10);
         yAxis.setLabel("Percentage");
+        NumberAxis yAxisRaw = new NumberAxis(0, 20, 2);
+        yAxisRaw.setLabel("Raw");
 
         NumberAxis xAxis2 = new NumberAxis(0, upBound, 10000);
         xAxis2.setLabel("Duration (ms)");
         NumberAxis yAxis2 = new NumberAxis(0, 100, 10);
         yAxis2.setLabel("Percentage");
+        NumberAxis yAxisRaw2 = new NumberAxis(0, 20, 2);
+        yAxisRaw2.setLabel("Raw");
 
         NumberAxis xAxis3 = new NumberAxis(0, upBound, 10000);
         xAxis3.setLabel("Duration (ms)");
         NumberAxis yAxis3 = new NumberAxis(0, 100, 10);
         yAxis3.setLabel("Percentage");
+        NumberAxis yAxisRaw3 = new NumberAxis(0, 20, 2);
+        yAxisRaw3.setLabel("Raw");
 
         NumberAxis xAxis4 = new NumberAxis(0, upBound, 10000);
         xAxis4.setLabel("Duration (ms)");
         NumberAxis yAxis4 = new NumberAxis(0, 100, 10);
         yAxis4.setLabel("Percentage");
+        NumberAxis yAxisRaw4 = new NumberAxis(0, 20, 2);
+        yAxisRaw4.setLabel("Raw");
 
-        inteLineChart = new LineChart(xAxis, yAxis);
+        NumberAxis xAxis5 = new NumberAxis(0, upBound, 10000);
+        xAxis5.setLabel("Duration (ms)");
+        NumberAxis yAxis5 = new NumberAxis(0, 100, 10);
+        yAxis5.setLabel("Percentage");
+        NumberAxis yAxisRaw5 = new NumberAxis(0, 20, 2);
+        yAxisRaw5.setLabel("Raw");
+
+        /*inteLineChart = new LineChart(xAxis, yAxis);
         inteLineChart.setCreateSymbols(false);
 
         hapLineChart = new LineChart(xAxis2, yAxis2);
@@ -306,15 +344,46 @@ public class UI_Controller extends BorderPane {
         surpLineChart = new LineChart(xAxis4, yAxis4);
         surpLineChart.setCreateSymbols(false);
 
+        allLineChart = new LineChart(xAxis5, yAxis5);
+        allLineChart.setCreateSymbols(false);*/
+
+        multiInteLineChart = new MultiAxisLineChart(xAxis, yAxis, yAxisRaw);
+        multiInteLineChart.setCreateSymbols(false);
+
+        multiHapLineChart = new MultiAxisLineChart(xAxis2, yAxis2, yAxisRaw2);
+        multiHapLineChart.setCreateSymbols(false);
+
+        multiSadLineChart = new MultiAxisLineChart(xAxis3, yAxis3, yAxisRaw3);
+        multiSadLineChart.setCreateSymbols(false);
+
+        multiSurpLineChart = new MultiAxisLineChart(xAxis4, yAxis4, yAxisRaw4);
+        multiSurpLineChart.setCreateSymbols(false);
+
+        multiAllLineChart = new MultiAxisLineChart(xAxis5, yAxis5, yAxisRaw5);
+        multiAllLineChart.setCreateSymbols(false);
+
         series1.setName("Interested");
         series2.setName("Happiness");
         series3.setName("Sadness");
         series4.setName("Surprise");
 
-        inteLineChart.getData().addAll(series1);
+        allSeries1.setName("Interested");
+        allSeries2.setName("Happiness");
+        allSeries3.setName("Sadness");
+        allSeries4.setName("Surprise");
+
+        //allLineChart.getData().addAll(allSeries1, allSeries2, allSeries3, allSeries4);
+        multiAllLineChart.getData().addAll(allSeries1, allSeries2, allSeries3, allSeries4);
+
+        /*inteLineChart.getData().addAll(series1);
         hapLineChart.getData().addAll(series2);
         sadLineChart.getData().addAll(series3);
-        surpLineChart.getData().addAll(series4);
+        surpLineChart.getData().addAll(series4);*/
+
+        multiInteLineChart.getData().addAll(series1);
+        multiHapLineChart.getData().addAll(series2);
+        multiSadLineChart.getData().addAll(series3);
+        multiSurpLineChart.getData().addAll(series4);
     }
 
     private void Add_PlayButton(){
@@ -457,11 +526,29 @@ public class UI_Controller extends BorderPane {
         timeSlider.valueProperty().addListener(new InvalidationListener() {
             public void invalidated(Observable ov) {
                 if (timeSlider.isValueChanging()) {
+
                     // multiply duration by percentage calculated by slider position
                     mp.seek(duration.multiply(timeSlider.getValue() / 100.0));
                 }
             }
         });
+
+        timeSlider.setOnDragDetected(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                dragStartTime = mp.getCurrentTime();
+            }
+        });
+
+        timeSlider.setOnMouseReleased(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                dragEndTime = mp.getCurrentTime();
+                skip = true;
+                //Get_SkippedData();
+            }
+        });
+
     }
 
     private void Add_PlayLabel(){
@@ -509,15 +596,26 @@ public class UI_Controller extends BorderPane {
         mp.setAutoPlay(true);
         mediaView.setMediaPlayer(mp);
 
-        inteLineChart.getData().removeAll(inteLineChart.getData());
+        /*inteLineChart.getData().removeAll(inteLineChart.getData());
         hapLineChart.getData().removeAll(hapLineChart.getData());
         sadLineChart.getData().removeAll(sadLineChart.getData());
-        surpLineChart.getData().removeAll(surpLineChart.getData());
+        surpLineChart.getData().removeAll(surpLineChart.getData());*/
 
-        series1 = new XYChart.Series();
-        series2 = new XYChart.Series();
-        series3 = new XYChart.Series();
-        series4 = new XYChart.Series();
+        multiInteLineChart.getData().removeAll(multiInteLineChart.getData());
+        multiHapLineChart.getData().removeAll(multiHapLineChart.getData());
+        multiSadLineChart.getData().removeAll(multiSadLineChart.getData());
+        multiSurpLineChart.getData().removeAll(multiSurpLineChart.getData());
+        multiAllLineChart.getData().removeAll(multiAllLineChart.getData());
+
+        series1 = new MultiAxisChart.Series<Number, Number>();
+        series2 = new MultiAxisChart.Series<Number, Number>();
+        series3 = new MultiAxisChart.Series<Number, Number>();
+        series4 = new MultiAxisChart.Series<Number, Number>();
+
+        allSeries1 = new MultiAxisChart.Series<Number, Number>();
+        allSeries2 = new MultiAxisChart.Series<Number, Number>();
+        allSeries3 = new MultiAxisChart.Series<Number, Number>();
+        allSeries4 = new MultiAxisChart.Series<Number, Number>();
 
         MediaPlayer_Stuff();
 
@@ -593,49 +691,108 @@ public class UI_Controller extends BorderPane {
 
     private void Add_ChartVisual(){
 
-        inteLineChart.setMaxHeight(320);
-        inteLineChart.setMinHeight(320);
-        inteLineChart.setPrefHeight(320);
+        multiInteLineChart.setMaxHeight(320);
+        multiInteLineChart.setMinHeight(320);
+        multiInteLineChart.setPrefHeight(320);
 
-        hapLineChart.setMaxHeight(320);
-        hapLineChart.setMinHeight(320);
-        hapLineChart.setPrefHeight(320);
+        multiHapLineChart.setMaxHeight(320);
+        multiHapLineChart.setMinHeight(320);
+        multiHapLineChart.setPrefHeight(320);
 
-        sadLineChart.setMaxHeight(320);
-        sadLineChart.setMinHeight(320);
-        sadLineChart.setPrefHeight(320);
+        multiSadLineChart.setMaxHeight(320);
+        multiSadLineChart.setMinHeight(320);
+        multiSadLineChart.setPrefHeight(320);
 
-        surpLineChart.setMaxHeight(320);
-        surpLineChart.setMinHeight(320);
-        surpLineChart.setPrefHeight(320);
+        multiSurpLineChart.setMaxHeight(320);
+        multiSurpLineChart.setMinHeight(320);
+        multiSurpLineChart.setPrefHeight(320);
+
+        multiAllLineChart.setMaxHeight(320);
+        multiAllLineChart.setMinHeight(320);
+        multiAllLineChart.setPrefHeight(320);
 
         // Add tabs
         TabPane tabPane = new TabPane();
 
         Tab inteTab = new Tab();
         inteTab.setText("Interested");
-        inteTab.setContent(inteLineChart);
+        inteTab.setContent(multiInteLineChart);
 
         Tab hapTab = new Tab();
         hapTab.setText("Happiness");
-        hapTab.setContent(hapLineChart);
+        hapTab.setContent(multiHapLineChart);
 
         Tab sadTab = new Tab();
         sadTab.setText("Sadness");
-        sadTab.setContent(sadLineChart);
+        sadTab.setContent(multiSadLineChart);
 
         Tab surpTab = new Tab();
         surpTab.setText("Surprise");
-        surpTab.setContent(surpLineChart);
+        surpTab.setContent(multiSurpLineChart);
+
+        Tab allTab = new Tab();
+        allTab.setText("All Emotions");
+        allTab.setContent(multiAllLineChart);
 
         tabPane.getTabs().add(inteTab);
         tabPane.getTabs().add(hapTab);
         tabPane.getTabs().add(sadTab);
         tabPane.getTabs().add(surpTab);
+        tabPane.getTabs().add(allTab);
 
         // Add elements to largest container
         vBox.getChildren().add(tabPane);
         setTop(vBox);
+
+    }
+
+    private void Get_SkippedData(){
+
+        String[] splitPartsDragStartTime = dragStartTime.toString().split("\\.");
+        String[] splitPartsDragEndTime = dragEndTime.toString().split("\\.");
+
+        for(int time = Integer.parseInt(splitPartsDragStartTime[0]); time < Integer.parseInt(splitPartsDragEndTime[0]); time = time+1000){
+
+            for(int i = 0; i < timeSegmentList.size(); i++){
+
+                if(Duration.millis(time).greaterThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getStartTime()).subtract(Duration.seconds(1))) &&
+                        Duration.millis(time).lessThanOrEqualTo(Duration.millis(timeSegmentList.get(i).getEndTime()).add(Duration.seconds(1)))){
+
+                    if(timeSegmentList.get(i).getEmotion().equals("Interest")){
+                        chartDataSkip[0]++;
+                    }
+
+                    if(timeSegmentList.get(i).getEmotion().equals("Happiness")){
+                        chartDataSkip[1]++;
+                    }
+
+                    if(timeSegmentList.get(i).getEmotion().equals("Sadness")){
+                        chartDataSkip[2]++;
+                    }
+
+                    if(timeSegmentList.get(i).getEmotion().equals("Surprise")){
+                        chartDataSkip[3]++;
+                    }
+
+                    if(timeSegmentList.get(i).getEmotion().equals("Indifferent")){
+                        chartDataSkip[4]++;
+                    }
+                }
+            }
+
+            series1.getData().add(new MultiAxisChart.Data<Number, Number>(time, Get_Percentage(chartDataSkip[0])));
+            series2.getData().add(new MultiAxisChart.Data<Number, Number>(time, Get_Percentage(chartDataSkip[1])));
+            series3.getData().add(new MultiAxisChart.Data<Number, Number>(time, Get_Percentage(chartDataSkip[2])));
+            series4.getData().add(new MultiAxisChart.Data<Number, Number>(time, Get_Percentage(chartDataSkip[3])));
+
+            allSeries1.getData().add(new MultiAxisChart.Data<Number, Number>(time, Get_Percentage(chartDataSkip[0])));
+            allSeries2.getData().add(new MultiAxisChart.Data<Number, Number>(time, Get_Percentage(chartDataSkip[1])));
+            allSeries3.getData().add(new MultiAxisChart.Data<Number, Number>(time, Get_Percentage(chartDataSkip[2])));
+            allSeries4.getData().add(new MultiAxisChart.Data<Number, Number>(time, Get_Percentage(chartDataSkip[3])));
+        }
+
+        for (int i = 0; i < chartDataSkip.length; i++)
+            chartDataSkip[i] = 0;
 
     }
 
