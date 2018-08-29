@@ -120,7 +120,7 @@ public class UI_Controller extends BorderPane {
 
     private Timeline tl = new Timeline();
 
-    public UI_Controller(final MediaPlayer mp, int dgPhase) {
+    public UI_Controller(final MediaPlayer mp) {
 
         this.mp = mp;
         setStyle("-fx-background-color: #9b9a9a;");
@@ -174,41 +174,26 @@ public class UI_Controller extends BorderPane {
 
         vBox.getChildren().add(mediaBar);
 
-        if(dgPhase == 1){ // Line graphs, 1 graph per emotion, 1 graph per tab
+        // Line Chart of data
+        Add_LineCharts(dur1);
+        Add_ChartVisual();
 
-            // Line Chart of data
-            Add_LineCharts(dur1);
-            Add_ChartVisual();
-        } else { // bar chart, combined all emotions in 1 chart
+        ReadCSV(1);
 
-            Add_Chart();
-            barChart.setMaxHeight(320);
-            barChart.setMinHeight(320);
-            barChart.setPrefHeight(320);
-            barChart.setHorizontalGridLinesVisible(true);
-
-            vBox.getChildren().add(mediaBar);
-            vBox.getChildren().add(barChart);
-            setTop(vBox);
-
-        }
-
-        ReadCSV(vidCounter);
-
-        Start_Timeline(dgPhase);
+        Start_Timeline();
 
     }
 
-    public void Start_Timeline(int dgPhase){
+    public void Start_Timeline(){
 
         tl.getKeyFrames().add(new KeyFrame(Duration.seconds(0.5),
                 new EventHandler<ActionEvent>() {
                     @Override public void handle(ActionEvent actionEvent) {
 
-                        if(skip){
+                        /*if(skip){
                             Get_SkippedData();
                             skip = false;
-                        }
+                        }*/
 
                         Duration currTime = mp.getCurrentTime();
                         String[] splitParts = currTime.toString().split("\\.");
@@ -240,28 +225,15 @@ public class UI_Controller extends BorderPane {
                             }
                         }
 
-                        if(dgPhase == 1){ // Line
+                        series1.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
+                        series2.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1])));
+                        series3.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
+                        series4.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
 
-
-
-                            series1.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
-                            series2.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1])));
-                            series3.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
-                            series4.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
-
-                            allSeries1.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
-                            allSeries2.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1])));
-                            allSeries3.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
-                            allSeries4.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
-
-                        } else { // Bar
-
-                            /*series1.getData().add(new XYChart.Data<>("Interested", Get_Percentage(chartData[0])));
-                            series2.getData().add(new XYChart.Data<>("Happiness", Get_Percentage(chartData[1])));
-                            series3.getData().add(new XYChart.Data<>("Sadness", Get_Percentage(chartData[2])));
-                            series4.getData().add(new XYChart.Data<>("Surprise", Get_Percentage(chartData[3])));*/
-
-                        }
+                        allSeries1.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[0])));
+                        allSeries2.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[1])));
+                        allSeries3.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[2])));
+                        allSeries4.getData().add(new MultiAxisChart.Data<Number, Number>(Integer.parseInt(splitParts[0]), Get_Percentage(chartData[3])));
 
                         for (int i = 0; i < chartData.length; i++)
                             chartData[i] = 0;
@@ -271,28 +243,6 @@ public class UI_Controller extends BorderPane {
         tl.setCycleCount(Timeline.INDEFINITE);
         tl.play();
 
-    }
-
-    private void Add_Chart(){
-
-        // Add a Chart
-        CategoryAxis xAxis = new CategoryAxis();
-        xAxis.setLabel("Emotions");
-
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setLabel("Percentage");
-        yAxis.setAutoRanging(false);
-        yAxis.setLowerBound(0);
-        yAxis.setUpperBound(100);
-
-        barChart = new BarChart(xAxis, yAxis);
-
-        series1.setName("Interested");
-        series2.setName("Happiness");
-        series3.setName("Sadness");
-        series4.setName("Surprise");
-
-        barChart.getData().addAll(series1, series2, series3, series4);
     }
 
     private void Add_LineCharts(int upBound){
@@ -504,7 +454,7 @@ public class UI_Controller extends BorderPane {
 
                 }
 
-                Start_Timeline(1);
+                Start_Timeline();
             }
         });
 
@@ -596,11 +546,6 @@ public class UI_Controller extends BorderPane {
         mp.setAutoPlay(true);
         mediaView.setMediaPlayer(mp);
 
-        /*inteLineChart.getData().removeAll(inteLineChart.getData());
-        hapLineChart.getData().removeAll(hapLineChart.getData());
-        sadLineChart.getData().removeAll(sadLineChart.getData());
-        surpLineChart.getData().removeAll(surpLineChart.getData());*/
-
         multiInteLineChart.getData().removeAll(multiInteLineChart.getData());
         multiHapLineChart.getData().removeAll(multiHapLineChart.getData());
         multiSadLineChart.getData().removeAll(multiSadLineChart.getData());
@@ -691,25 +636,25 @@ public class UI_Controller extends BorderPane {
 
     private void Add_ChartVisual(){
 
-        multiInteLineChart.setMaxHeight(320);
-        multiInteLineChart.setMinHeight(320);
-        multiInteLineChart.setPrefHeight(320);
+        multiInteLineChart.setMaxHeight(290);
+        multiInteLineChart.setMinHeight(290);
+        multiInteLineChart.setPrefHeight(290);
 
-        multiHapLineChart.setMaxHeight(320);
-        multiHapLineChart.setMinHeight(320);
-        multiHapLineChart.setPrefHeight(320);
+        multiHapLineChart.setMaxHeight(290);
+        multiHapLineChart.setMinHeight(290);
+        multiHapLineChart.setPrefHeight(290);
 
-        multiSadLineChart.setMaxHeight(320);
-        multiSadLineChart.setMinHeight(320);
-        multiSadLineChart.setPrefHeight(320);
+        multiSadLineChart.setMaxHeight(290);
+        multiSadLineChart.setMinHeight(290);
+        multiSadLineChart.setPrefHeight(290);
 
-        multiSurpLineChart.setMaxHeight(320);
-        multiSurpLineChart.setMinHeight(320);
-        multiSurpLineChart.setPrefHeight(320);
+        multiSurpLineChart.setMaxHeight(290);
+        multiSurpLineChart.setMinHeight(290);
+        multiSurpLineChart.setPrefHeight(290);
 
-        multiAllLineChart.setMaxHeight(320);
-        multiAllLineChart.setMinHeight(320);
-        multiAllLineChart.setPrefHeight(320);
+        multiAllLineChart.setMaxHeight(290);
+        multiAllLineChart.setMinHeight(290);
+        multiAllLineChart.setPrefHeight(290);
 
         // Add tabs
         TabPane tabPane = new TabPane();

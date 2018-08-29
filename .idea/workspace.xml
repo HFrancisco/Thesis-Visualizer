@@ -61,12 +61,10 @@
       <file leaf-file-name="UI_Controller.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sample/UI_Controller.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="800">
-              <caret line="796" column="5" lean-forward="false" selection-start-line="796" selection-start-column="5" selection-end-line="796" selection-end-column="5" />
+            <state relative-caret-position="244">
+              <caret line="179" column="0" lean-forward="true" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#UI_Controller#0;class#UI_Controller#0" expanded="false" />
-                <element signature="method#Add_Chart#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_LineCharts#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_PlayButton#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_NextButton#0;class#UI_Controller#0" expanded="false" />
@@ -76,21 +74,46 @@
                 <element signature="method#Add_VolumeLabel#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_VolumeSlider#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Get_Percentage#0;class#UI_Controller#0" expanded="false" />
-                <element signature="method#Create_NewMediaPlayer#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#MediaPlayer_Stuff#0;class#UI_Controller#0" expanded="false" />
-                <element signature="method#ReadCSV#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Remove_Charts#0;class#UI_Controller#0" expanded="false" />
                 <element signature="method#Add_ChartVisual#0;class#UI_Controller#0" expanded="false" />
+                <element signature="method#Get_SkippedData#0;class#UI_Controller#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Selection_Window.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Selection_Window.java">
+      <file leaf-file-name="CSV_Reader.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/CSV_Reader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+            <state relative-caret-position="340">
+              <caret line="28" column="52" lean-forward="false" selection-start-line="28" selection-start-column="52" selection-end-line="28" selection-end-column="52" />
+              <folding>
+                <element signature="method#Read#0;class#CSV_Reader#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Time_Segment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/Time_Segment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="14" column="21" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+              <folding>
+                <element signature="method#setStartTime#0;class#Time_Segment#0" expanded="false" />
+                <element signature="method#setEndTime#0;class#Time_Segment#0" expanded="false" />
+                <element signature="method#setEmotion#0;class#Time_Segment#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Start_Window.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/sample/Start_Window.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="313">
+              <caret line="31" column="0" lean-forward="true" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -109,8 +132,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>setb</find>
-      <find>up</find>
       <find>seek</find>
       <find>bar</find>
       <find>Controller_p</find>
@@ -133,13 +154,18 @@
       <find>eries</find>
       <find>duration</find>
       <find>timelabel</find>
-      <find>read</find>
       <find>readcsv</find>
       <find>vbox.get</find>
       <find>vis</find>
       <find>series1</find>
       <find>series</find>
+      <find>start_</find>
+      <find>read</find>
+      <find>readc</find>
     </findStrings>
+    <replaceStrings>
+      <replace>startButton</replace>
+    </replaceStrings>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -159,12 +185,13 @@
       <list>
         <option value="$USER_HOME$/Downloads/Controller.class" />
         <option value="$PROJECT_DIR$/src/resources/SegmentsOnlyV2.csv" />
-        <option value="$PROJECT_DIR$/src/sample/Main.java" />
         <option value="$PROJECT_DIR$/src/resources/SegmentsOnlyV2Phase2.csv" />
         <option value="$PROJECT_DIR$/src/sample/Selection_Window.java" />
         <option value="$PROJECT_DIR$/src/sample/Controller.java" />
         <option value="$PROJECT_DIR$/src/sample/CSV_Reader.java" />
         <option value="$PROJECT_DIR$/src/sample/Time_Segment.java" />
+        <option value="$PROJECT_DIR$/src/sample/Main.java" />
+        <option value="$PROJECT_DIR$/src/sample/Start_Window.java" />
         <option value="$PROJECT_DIR$/src/sample/UI_Controller.java" />
       </list>
     </option>
@@ -200,8 +227,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="AndroidView" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -223,20 +252,12 @@
               <item name="Thesis Visualizer" type="b2602c69:ProjectViewProjectNode" />
               <item name="Thesis Visualizer" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Thesis Visualizer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Thesis Visualizer" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="sample" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -439,11 +460,15 @@
       <workItem from="1534161505405" duration="13656000" />
       <workItem from="1534655073963" duration="14251000" />
       <workItem from="1534957026051" duration="33000" />
+      <workItem from="1535111966970" duration="35000" />
+      <workItem from="1535346442894" duration="661000" />
+      <workItem from="1535421030322" duration="3502000" />
+      <workItem from="1535533719716" duration="5772000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="182375000" />
+    <option name="totallyTimeSpent" value="192345000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -457,8 +482,8 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.06910569" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24085365" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -534,7 +559,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="48" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/sample/UI_Controller.java</url>
+          <line>124</line>
+          <properties />
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="51" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -924,51 +957,58 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="31" column="1" lean-forward="true" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
+        <state relative-caret-position="238">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
+        <state relative-caret-position="-340">
           <caret line="18" column="20" lean-forward="false" selection-start-line="18" selection-start-column="20" selection-end-line="18" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Time_Segment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-253">
-          <caret line="33" column="61" lean-forward="true" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="61" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/CSV_Reader.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/Start_Window.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-322">
-          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Selection_Window.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        <state relative-caret-position="313">
+          <caret line="31" column="0" lean-forward="true" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/CSV_Reader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="28" column="52" lean-forward="false" selection-start-line="28" selection-start-column="52" selection-end-line="28" selection-end-column="52" />
+          <folding>
+            <element signature="method#Read#0;class#CSV_Reader#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sample/Time_Segment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="14" column="21" lean-forward="false" selection-start-line="14" selection-start-column="21" selection-end-line="14" selection-end-column="21" />
+          <folding>
+            <element signature="method#setStartTime#0;class#Time_Segment#0" expanded="false" />
+            <element signature="method#setEndTime#0;class#Time_Segment#0" expanded="false" />
+            <element signature="method#setEmotion#0;class#Time_Segment#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/UI_Controller.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="800">
-          <caret line="796" column="5" lean-forward="false" selection-start-line="796" selection-start-column="5" selection-end-line="796" selection-end-column="5" />
+        <state relative-caret-position="244">
+          <caret line="179" column="0" lean-forward="true" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#UI_Controller#0;class#UI_Controller#0" expanded="false" />
-            <element signature="method#Add_Chart#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_LineCharts#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_PlayButton#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_NextButton#0;class#UI_Controller#0" expanded="false" />
@@ -978,11 +1018,10 @@
             <element signature="method#Add_VolumeLabel#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_VolumeSlider#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Get_Percentage#0;class#UI_Controller#0" expanded="false" />
-            <element signature="method#Create_NewMediaPlayer#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#MediaPlayer_Stuff#0;class#UI_Controller#0" expanded="false" />
-            <element signature="method#ReadCSV#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Remove_Charts#0;class#UI_Controller#0" expanded="false" />
             <element signature="method#Add_ChartVisual#0;class#UI_Controller#0" expanded="false" />
+            <element signature="method#Get_SkippedData#0;class#UI_Controller#0" expanded="false" />
           </folding>
         </state>
       </provider>
